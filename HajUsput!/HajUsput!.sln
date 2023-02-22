@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HajUsput!", "HajUsput!.csproj", "{289163CC-EA28-40EE-A6BD-0E7DB3CE5613}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hajUsput.services", "..\hajUsput.services\hajUsput.services.csproj", "{D02EFB37-5C7E-4166-80B9-60A3CD810D3D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{289163CC-EA28-40EE-A6BD-0E7DB3CE5613}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{289163CC-EA28-40EE-A6BD-0E7DB3CE5613}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{289163CC-EA28-40EE-A6BD-0E7DB3CE5613}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{289163CC-EA28-40EE-A6BD-0E7DB3CE5613}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D02EFB37-5C7E-4166-80B9-60A3CD810D3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D02EFB37-5C7E-4166-80B9-60A3CD810D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D02EFB37-5C7E-4166-80B9-60A3CD810D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D02EFB37-5C7E-4166-80B9-60A3CD810D3D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B6658EF4-5D8A-4BBA-8CDE-EA05B0749905}
+	EndGlobalSection
+EndGlobal
