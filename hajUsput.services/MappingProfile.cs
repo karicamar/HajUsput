@@ -19,6 +19,10 @@ namespace hajUsput.Services
 
             CreateMap<Database.Role, Model.Role>();
 
+            CreateMap<Database.Car, Model.Car>();
+            CreateMap<Model.Requests.CarInsertRequest, Database.Car>();
+            CreateMap<Model.Requests.CarUpdateRequest, Database.Car>();
+
 
 
 

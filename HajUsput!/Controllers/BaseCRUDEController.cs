@@ -1,4 +1,5 @@
 ﻿using hajUsput.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HajUsput_.Controllers
@@ -18,6 +19,7 @@ namespace HajUsput_.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles ="Admin")]
         public virtual async Task<T> Insert([FromBody] TInsert insert)
         {
             return await _service.Insert(insert);

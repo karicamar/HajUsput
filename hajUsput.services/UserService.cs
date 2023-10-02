@@ -59,6 +59,25 @@ namespace hajUsput.Services
             return base.AddInclude(query, search);
         }
 
+        public async Task<Model.User> Login(string username, string password)
+        {
+            var entity = await _context.Users.Include("UserRoles.Role").FirstOrDefaultAsync(x => x.Username == username);
+
+            if (entity == null)
+            {
+                return null;
+            }
+
+            var hash = GenerateHash(entity.PasswordSalt, password);
+
+            if (hash != entity.PasswordHash)
+            {
+                return null;
+            }
+
+            return _mapper.Map<Model.User>(entity);
+        }
+
         //public async Task<Model.User> Login(string username, string password)
         //{
         //    var entity = await _context.User.Include("KorisniciUloges.Uloga").FirstOrDefaultAsync(x => x.KorisnickoIme == username);
