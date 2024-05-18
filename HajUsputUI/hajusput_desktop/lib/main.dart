@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:hajusput_desktop/providers/user_provider.dart';
 import 'package:hajusput_desktop/screens/login_screen.dart';
 import 'package:hajusput_desktop/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+   runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => UserProvider()),
+      //ChangeNotifierProvider(create: (_) => JediniceMjereProvider()),
+      //ChangeNotifierProvider(create: (_) => VrsteProizvodaProvider()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

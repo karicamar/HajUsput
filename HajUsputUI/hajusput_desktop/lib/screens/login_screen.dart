@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
-import 'package:hajusput_desktop/screens/home_screen.dart';
+
 import 'package:ionicons/ionicons.dart';
+import 'dashboard_screen.dart';
 
 import 'package:flutter/material.dart';
 
@@ -60,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
           print("login $username $password");
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const HomeScreen(),
+                builder: (context) =>  DashboardScreen(),
               ),
             );
           },
@@ -91,14 +92,15 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Stack(
       children: [
         //Image.network("https://e7.pngegg.com/pngimages/667/529/png-clipart-carpool-real-time-ridesharing-transport-passenger-car-driving-logo.png"),
-
+         
+           
         Center(
           child: Padding(
             padding: const EdgeInsets.only(top: 100),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               //crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+              children: [ Image.asset('assets/images/logo-temp.png'),
                 inputField(
                     'Username', Ionicons.person_outline, _usernameController),
                 inputField('Password', Ionicons.lock_closed_outline,
