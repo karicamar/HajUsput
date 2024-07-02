@@ -14,7 +14,7 @@ namespace hajUsput.Services
         // Model.User Login(string username, string password);
         public Task<Model.User> Login(string username, string password);
 
-
+        public Task<Model.User> Block(int id);
 
     }
 }

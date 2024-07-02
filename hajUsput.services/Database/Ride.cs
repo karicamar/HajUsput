@@ -15,8 +15,6 @@ public partial class Ride
 
     public DateTime DepartureDate { get; set; }
 
-    public TimeSpan DepartureTime { get; set; }
-
     public int? AvailableSeats { get; set; }
 
     public string? RideStatus { get; set; }

@@ -58,7 +58,19 @@ namespace hajUsput.Services
             }
             return base.AddInclude(query, search);
         }
+        public override IQueryable<User> AddFilter(IQueryable<User> query,UserSearchObject? search = null)
+        {
+            var filteredQuery = base.AddFilter(query, search);
 
+            if (!string.IsNullOrWhiteSpace(search?.FTS))
+            {
+                filteredQuery = filteredQuery.Where(x => x.FirstName.Contains(search.FTS) || x.LastName.Contains(search.FTS));
+            }
+
+            
+
+            return filteredQuery;
+        }
         public async Task<Model.User> Login(string username, string password)
         {
             var entity = await _context.Users.Include("UserRoles.Role").FirstOrDefaultAsync(x => x.Username == username);
@@ -78,6 +90,18 @@ namespace hajUsput.Services
             return _mapper.Map<Model.User>(entity);
         }
 
+        public virtual async Task<Model.User> Block(int id)
+        {
+            var set = _context.Set<Database.User>();
+
+            var entity = await set.FindAsync(id);
+            if (entity.IsBlocked == false) { entity.IsBlocked = true;}
+            else {  entity.IsBlocked = false;}
+            
+
+            await _context.SaveChangesAsync();
+            return _mapper.Map<Model.User>(entity);
+        }
         //public async Task<Model.User> Login(string username, string password)
         //{
         //    var entity = await _context.User.Include("KorisniciUloges.Uloga").FirstOrDefaultAsync(x => x.KorisnickoIme == username);

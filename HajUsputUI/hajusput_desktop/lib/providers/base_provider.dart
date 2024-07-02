@@ -1,6 +1,3 @@
-
-
-
 import 'dart:convert';
 
 import 'package:hajusput_desktop/utils/utils.dart';
@@ -22,10 +19,10 @@ abstract class BaseProvider<T> with ChangeNotifier {
   Future<SearchResult<T>> get({dynamic filter}) async {
     var url = "$_baseUrl$_endpoint";
 
-    // if (filter != null) {
-    //   var queryString = getQueryString(filter);
-    //   url = "$url?$queryString";
-    // }
+    if (filter != null) {
+      var queryString = getQueryString(filter);
+      url = "$url?$queryString";
+    }
 
     var uri = Uri.parse(url);
     var headers = createHeaders();
@@ -57,7 +54,9 @@ abstract class BaseProvider<T> with ChangeNotifier {
 
     var jsonRequest = jsonEncode(request);
     var response = await http.post(uri, headers: headers, body: jsonRequest);
-
+    print("Request URL: $url");
+    print("Request Headers: $headers");
+    print("Request Body: $jsonRequest");
     if (isValidResponse(response)) {
       var data = jsonDecode(response.body);
       return fromJson(data);
@@ -74,6 +73,28 @@ abstract class BaseProvider<T> with ChangeNotifier {
     var jsonRequest = jsonEncode(request);
     var response = await http.put(uri, headers: headers, body: jsonRequest);
 
+    print("Request URL: $url");
+    print("Request Headers: $headers");
+    print("Request Body: $jsonRequest");
+    if (isValidResponse(response)) {
+      var data = jsonDecode(response.body);
+      return fromJson(data);
+    } else {
+      throw new Exception("Unknown error");
+    }
+  }
+
+  Future<T> block(int id, [dynamic request]) async {
+    var url = "$_baseUrl$_endpoint/$id";
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
+
+    var jsonRequest = jsonEncode(request);
+    var response = await http.put(uri, headers: headers, body: jsonRequest);
+
+    print("Request URL: $url");
+    print("Request Headers: $headers");
+    print("Request Body: $jsonRequest");
     if (isValidResponse(response)) {
       var data = jsonDecode(response.body);
       return fromJson(data);
@@ -90,6 +111,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
     if (response.statusCode < 299) {
       return true;
     } else if (response.statusCode == 401) {
+      print(response.body);
       throw new Exception("Unauthorized");
     } else {
       print(response.body);
@@ -114,35 +136,35 @@ abstract class BaseProvider<T> with ChangeNotifier {
     return headers;
   }
 
-  // String getQueryString(Map params,
-  //     {String prefix: '&', bool inRecursion: false}) {
-  //   String query = '';
-  //   params.forEach((key, value) {
-  //     if (inRecursion) {
-  //       if (key is int) {
-  //         key = '[$key]';
-  //       } else if (value is List || value is Map) {
-  //         key = '.$key';
-  //       } else {
-  //         key = '.$key';
-  //       }
-  //     }
-  //     if (value is String || value is int || value is double || value is bool) {
-  //       var encoded = value;
-  //       if (value is String) {
-  //         encoded = Uri.encodeComponent(value);
-  //       }
-  //       query += '$prefix$key=$encoded';
-  //     } else if (value is DateTime) {
-  //       query += '$prefix$key=${(value as DateTime).toIso8601String()}';
-  //     } else if (value is List || value is Map) {
-  //       if (value is List) value = value.asMap();
-  //       value.forEach((k, v) {
-  //         query +=
-  //             getQueryString({k: v}, prefix: '$prefix$key', inRecursion: true);
-  //       });
-  //     }
-  //   });
-  //   return query;
-  // }
+  String getQueryString(Map params,
+      {String prefix = '&', bool inRecursion = false}) {
+    String query = '';
+    params.forEach((key, value) {
+      if (inRecursion) {
+        if (key is int) {
+          key = '[$key]';
+        } else if (value is List || value is Map) {
+          key = '.$key';
+        } else {
+          key = '.$key';
+        }
+      }
+      if (value is String || value is int || value is double || value is bool) {
+        var encoded = value;
+        if (value is String) {
+          encoded = Uri.encodeComponent(value);
+        }
+        query += '$prefix$key=$encoded';
+      } else if (value is DateTime) {
+        query += '$prefix$key=${(value as DateTime).toIso8601String()}';
+      } else if (value is List || value is Map) {
+        if (value is List) value = value.asMap();
+        value.forEach((k, v) {
+          query +=
+              getQueryString({k: v}, prefix: '$prefix$key', inRecursion: true);
+        });
+      }
+    });
+    return query;
+  }
 }

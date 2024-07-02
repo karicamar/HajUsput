@@ -19,14 +19,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
+    <PackageReference Include="Stateless" Version="5.16.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\hajUsput.Model\hajUsput.Model.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="RideStateMachine\" />
   </ItemGroup>
 
 </Project>

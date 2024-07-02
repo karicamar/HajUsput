@@ -9,6 +9,7 @@ namespace hajUsput.Model.SearchObjects
 
         public bool? IsRoleIncluded { get; set; }
 
+        public string FTS { get; set; }
 
     }
 }

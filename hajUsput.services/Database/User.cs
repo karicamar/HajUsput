@@ -42,4 +42,6 @@ public partial class User
     public virtual ICollection<Ride> Rides { get; set; } = new List<Ride>();
 
     public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+
+    public bool IsBlocked { get; set; }
 }

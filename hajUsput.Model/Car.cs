@@ -8,7 +8,7 @@ namespace hajUsput.Model
     {
        
 
-       // public int? DriverId { get; set; }
+        public int CarId { get; set; }
 
         public string Make { get; set; } 
 
