@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace hajUsput.Services.RideStateMachine
+namespace hajUsput.Services.StateMachines
 {
-    public class RideState
+    public class RideStateMachine
     {
         public enum State
         {
@@ -27,7 +27,7 @@ namespace hajUsput.Services.RideStateMachine
 
         public State CurrentState => _stateMachine.State;
 
-        public RideState()
+        public RideStateMachine()
         {
             _stateMachine = new StateMachine<State, Trigger>(State.Scheduled);
 

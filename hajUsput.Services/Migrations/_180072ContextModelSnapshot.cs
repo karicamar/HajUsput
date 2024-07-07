@@ -52,6 +52,16 @@ namespace hajUsput.Services.Migrations
                     b.HasIndex("RideId");
 
                     b.ToTable("Bookings");
+
+                    b.HasData(
+                        new
+                        {
+                            BookingId = 1,
+                            BookingDate = new DateTime(2024, 7, 3, 20, 46, 19, 466, DateTimeKind.Local).AddTicks(5325),
+                            BookingStatus = "Confirmed",
+                            PassengerId = 2,
+                            RideId = 1
+                        });
                 });
 
             modelBuilder.Entity("hajUsput.Services.Database.Car", b =>
@@ -97,6 +107,17 @@ namespace hajUsput.Services.Migrations
                     b.HasIndex("DriverId");
 
                     b.ToTable("Cars");
+
+                    b.HasData(
+                        new
+                        {
+                            CarId = 1,
+                            CarType = "Sedan",
+                            Color = "Red",
+                            DriverId = 1,
+                            LicensePlateNumber = "ABC123",
+                            Make = "Toyota"
+                        });
                 });
 
             modelBuilder.Entity("hajUsput.Services.Database.Gender", b =>
@@ -117,6 +138,18 @@ namespace hajUsput.Services.Migrations
                         .HasName("PK__Genders__4E24E9F7F36896DA");
 
                     b.ToTable("Genders");
+
+                    b.HasData(
+                        new
+                        {
+                            GenderId = 1,
+                            GenderName = "Male"
+                        },
+                        new
+                        {
+                            GenderId = 2,
+                            GenderName = "Female"
+                        });
                 });
 
             modelBuilder.Entity("hajUsput.Services.Database.Location", b =>
@@ -141,6 +174,20 @@ namespace hajUsput.Services.Migrations
                         .HasName("PK__Location__E7FEA497A22466C6");
 
                     b.ToTable("Locations");
+
+                    b.HasData(
+                        new
+                        {
+                            LocationId = 1,
+                            City = "New York",
+                            Country = "USA"
+                        },
+                        new
+                        {
+                            LocationId = 2,
+                            City = "Los Angeles",
+                            Country = "USA"
+                        });
                 });
 
             modelBuilder.Entity("hajUsput.Services.Database.MessageNotification", b =>
@@ -171,6 +218,16 @@ namespace hajUsput.Services.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("MessageNotifications");
+
+                    b.HasData(
+                        new
+                        {
+                            MessageId = 1,
+                            MessageContent = "Your ride is scheduled.",
+                            MessageDate = new DateTime(2024, 7, 3, 20, 46, 19, 466, DateTimeKind.Local).AddTicks(5773),
+                            ReceiverId = 2,
+                            SenderId = 1
+                        });
                 });
 
             modelBuilder.Entity("hajUsput.Services.Database.Payment", b =>
@@ -206,6 +263,17 @@ namespace hajUsput.Services.Migrations
                     b.HasIndex("RideId");
 
                     b.ToTable("Payments");
+
+                    b.HasData(
+                        new
+                        {
+                            PaymentId = 1,
+                            Amount = 20.00m,
+                            PayerId = 2,
+                            PaymentDate = new DateTime(2024, 7, 3, 20, 46, 19, 466, DateTimeKind.Local).AddTicks(5427),
+                            PaymentStatus = "Completed",
+                            RideId = 1
+                        });
                 });
 
             modelBuilder.Entity("hajUsput.Services.Database.ReviewRating", b =>
@@ -239,6 +307,16 @@ namespace hajUsput.Services.Migrations
                     b.HasIndex("RideId");
 
                     b.ToTable("ReviewRatings");
+
+                    b.HasData(
+                        new
+                        {
+                            ReviewId = 1,
+                            Comments = "Great ride!",
+                            ReviewDate = new DateTime(2024, 7, 3, 20, 46, 19, 466, DateTimeKind.Local).AddTicks(5662),
+                            ReviewerId = 2,
+                            RideId = 1
+                        });
                 });
 
             modelBuilder.Entity("hajUsput.Services.Database.Ride", b =>
@@ -282,6 +360,17 @@ namespace hajUsput.Services.Migrations
                     b.HasIndex("DriverId");
 
                     b.ToTable("Rides");
+
+                    b.HasData(
+                        new
+                        {
+                            RideId = 1,
+                            DepartureDate = new DateTime(2024, 7, 3, 20, 46, 19, 466, DateTimeKind.Local).AddTicks(4827),
+                            DepartureLocationId = 1,
+                            DestinationLocationId = 2,
+                            DriverId = 1,
+                            RideStatus = "Scheduled"
+                        });
                 });
 
             modelBuilder.Entity("hajUsput.Services.Database.Role", b =>
@@ -302,6 +391,18 @@ namespace hajUsput.Services.Migrations
                         .HasName("PK__Roles__8AFACE1A64D6009E");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            RoleName = "Admin"
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            RoleName = "User"
+                        });
                 });
 
             modelBuilder.Entity("hajUsput.Services.Database.User", b =>
@@ -368,6 +469,36 @@ namespace hajUsput.Services.Migrations
                     b.HasIndex("GenderId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            Email = "admin@example.com",
+                            FirstName = "Admin",
+                            GenderId = 1,
+                            IsBlocked = false,
+                            LastName = "User",
+                            PasswordHash = "adminhash",
+                            PasswordSalt = "adminsalt",
+                            PhoneNumber = "1234567890",
+                            RegistrationDate = new DateTime(2024, 7, 3, 20, 46, 19, 466, DateTimeKind.Local).AddTicks(4625),
+                            Username = "admin"
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            Email = "johndoe@example.com",
+                            FirstName = "John",
+                            GenderId = 1,
+                            IsBlocked = false,
+                            LastName = "Doe",
+                            PasswordHash = "johnhash",
+                            PasswordSalt = "johnsalt",
+                            PhoneNumber = "0987654321",
+                            RegistrationDate = new DateTime(2024, 7, 3, 20, 46, 19, 466, DateTimeKind.Local).AddTicks(4694),
+                            Username = "johndoe"
+                        });
                 });
 
             modelBuilder.Entity("hajUsput.Services.Database.UserRole", b =>
@@ -392,6 +523,20 @@ namespace hajUsput.Services.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserRoleId = 1,
+                            RoleId = 1,
+                            UserId = 1
+                        },
+                        new
+                        {
+                            UserRoleId = 2,
+                            RoleId = 2,
+                            UserId = 2
+                        });
                 });
 
             modelBuilder.Entity("hajUsput.Services.Database.Booking", b =>

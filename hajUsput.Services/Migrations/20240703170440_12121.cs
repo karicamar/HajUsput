@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace hajUsput.Services.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class _12121 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -65,7 +65,8 @@ namespace hajUsput.Services.Migrations
                     PasswordHash = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     PasswordSalt = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     PhoneNumber = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: true),
-                    RegistrationDate = table.Column<DateTime>(type: "date", nullable: true)
+                    RegistrationDate = table.Column<DateTime>(type: "date", nullable: true),
+                    IsBlocked = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -136,7 +137,6 @@ namespace hajUsput.Services.Migrations
                     DepartureLocationId = table.Column<int>(type: "int", nullable: true),
                     DestinationLocationId = table.Column<int>(type: "int", nullable: true),
                     DepartureDate = table.Column<DateTime>(type: "date", nullable: false),
-                    DepartureTime = table.Column<TimeSpan>(type: "time", nullable: false),
                     AvailableSeats = table.Column<int>(type: "int", nullable: true),
                     RideStatus = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: true),
                     Price = table.Column<int>(type: "int", nullable: true)

@@ -12,8 +12,8 @@ using hajUsput.Services.Database;
 namespace hajUsput.Services.Migrations
 {
     [DbContext(typeof(_180072Context))]
-    [Migration("20240618232307_IsBlocked")]
-    partial class IsBlocked
+    [Migration("20240703170440_12121")]
+    partial class _12121
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -260,9 +260,6 @@ namespace hajUsput.Services.Migrations
 
                     b.Property<int?>("DepartureLocationId")
                         .HasColumnType("int");
-
-                    b.Property<TimeSpan>("DepartureTime")
-                        .HasColumnType("time");
 
                     b.Property<int?>("DestinationLocationId")
                         .HasColumnType("int");

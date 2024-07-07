@@ -243,6 +243,57 @@ public partial class _180072Context : DbContext
                 .HasConstraintName("FK__UserRoles__UserI__3E52440B");
         });
 
+        //////
+
+        modelBuilder.Entity<Gender>().HasData(
+            new Gender { GenderId = 1, GenderName = "Male" },
+            new Gender { GenderId = 2, GenderName = "Female" }
+        );
+
+        modelBuilder.Entity<Role>().HasData(
+            new Role { RoleId = 1, RoleName = "Admin" },
+            new Role { RoleId = 2, RoleName = "User" }
+        );
+
+        modelBuilder.Entity<User>().HasData(
+            new User { UserId = 1, Username = "admin", FirstName = "Admin", LastName = "User", Email = "admin@example.com", PhoneNumber = "1234567890", PasswordHash = "adminhash", PasswordSalt = "adminsalt", RegistrationDate = DateTime.Now, GenderId = 1 },
+            new User { UserId = 2, Username = "johndoe", FirstName = "John", LastName = "Doe", Email = "johndoe@example.com", PhoneNumber = "0987654321", PasswordHash = "johnhash", PasswordSalt = "johnsalt", RegistrationDate = DateTime.Now, GenderId = 1 }
+        );
+
+        modelBuilder.Entity<UserRole>().HasData(
+            new UserRole { UserRoleId = 1, UserId = 1, RoleId = 1 },
+            new UserRole { UserRoleId = 2, UserId = 2, RoleId = 2 }
+        );
+
+        modelBuilder.Entity<Location>().HasData(
+            new Location { LocationId = 1, City = "New York", Country = "USA" },
+            new Location { LocationId = 2, City = "Los Angeles", Country = "USA" }
+        );
+
+        modelBuilder.Entity<Car>().HasData(
+            new Car { CarId = 1, CarType = "Sedan", Color = "Red", LicensePlateNumber = "ABC123", Make = "Toyota", DriverId = 1 }
+        );
+
+        modelBuilder.Entity<Ride>().HasData(
+            new Ride { RideId = 1, DepartureDate = DateTime.Now, RideStatus = "Scheduled", DepartureLocationId = 1, DestinationLocationId = 2, DriverId = 1 }
+        );
+
+        modelBuilder.Entity<Booking>().HasData(
+            new Booking { BookingId = 1, BookingDate = DateTime.Now, BookingStatus = "Confirmed", PassengerId = 2, RideId = 1 }
+        );
+
+        modelBuilder.Entity<Payment>().HasData(
+            new Payment { PaymentId = 1, Amount = 20.00m, PaymentDate = DateTime.Now, PaymentStatus = "Completed", PayerId = 2, RideId = 1 }
+        );
+
+        modelBuilder.Entity<ReviewRating>().HasData(
+            new ReviewRating { ReviewId = 1, Comments = "Great ride!", ReviewDate = DateTime.Now, ReviewerId = 2, RideId = 1 }
+        );
+
+        modelBuilder.Entity<MessageNotification>().HasData(
+            new MessageNotification { MessageId = 1, MessageContent = "Your ride is scheduled.", MessageDate = DateTime.Now, SenderId = 1, ReceiverId = 2 }
+        );
+
         OnModelCreatingPartial(modelBuilder);
     }
 
