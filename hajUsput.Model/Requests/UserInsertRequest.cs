@@ -20,12 +20,10 @@ namespace hajUsput.Model.Requests
 
         public string PhoneNumber { get; set; }
 
-        // [Required]
-        //[Compare("PasswordConfirm", ErrorMessage = "Passwords do not match.")]
+       
         public string Password { get; set; }
 
-        //[Compare("Password", ErrorMessage = "Passwords do not match.")]
-        public string PasswordConfirm { get; set; }
+        
         public DateTime? RegistrationDate = DateTime.Now;
 
     }

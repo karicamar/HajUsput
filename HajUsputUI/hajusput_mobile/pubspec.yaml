@@ -42,6 +42,12 @@ dependencies:
   intl: ^0.19.0
   flutter_form_builder: ^9.3.0
   google_fonts: ^6.2.1
+  google_maps_flutter: ^2.2.8
+  google_places_flutter: ^2.0.8
+  form_builder_validators: ^11.0.0
+  flutter_stripe: ^11.0.0
+  flutter_rating_bar: ^4.0.1
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -84,7 +90,18 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
+  fonts:
+   - family: ClashGrotesk
+     fonts:
+      - asset: fonts/ClashGrotesk-Regular.otf
+        weight: 700
+      # - asset: fonts/ClashGrotesk-Extralight.otf
+      # - asset: fonts/ClashGrotesk-Light.otf
+      # - asset: fonts/ClashGrotesk-Bold.otf
+      # - asset: fonts/ClashGrotesk-Semibold.otf
+      # - asset: fonts/ClashGrotesk-Medium.otf
+        
+
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

@@ -10,7 +10,7 @@ namespace hajUsput.Model
 
         public int ReviewId { get; set; }
 
-        public int? RideId { get; set; }
+        public int? DriverId { get; set; }
 
         public int? ReviewerId { get; set; }
 

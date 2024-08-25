@@ -1,116 +1,162 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/rendering.dart';
-
-import 'package:ionicons/ionicons.dart';
-import 'dashboard_screen.dart';
-
 import 'package:flutter/material.dart';
+import 'package:hajusput_mobile/providers/user_provider.dart';
+import 'package:hajusput_mobile/screens/email_screen.dart';
 
-TextEditingController _usernameController = new TextEditingController();
-    TextEditingController _passwordController = new TextEditingController();
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
-
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  Widget inputField(
-      String hint, IconData iconData, TextEditingController controller) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SizedBox(
-        height: 40,
-        width: 300,
-        child: Material(
-          elevation: 8,
-          shadowColor: Colors.black87,
-          color: Colors.transparent,
-          borderRadius: BorderRadius.circular(30),
-          child: TextField(
-            textAlignVertical: TextAlignVertical.bottom,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide.none,
-              ),
-              filled: true,
-              fillColor: Colors.white,
-              hintText: hint,
-              prefixIcon: Icon(iconData),
-            ),
-            controller: controller,
-          ),
-        ),
-      ),
-    );
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+  String? _errorMessage;
+  final UserProvider _userProvider = UserProvider();
+
+  void _login() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      final userId = await _userProvider.login(
+        _usernameController.text,
+        _passwordController.text,
+      );
+      print("Logged in user ID: $userId");
+
+      Navigator.pushReplacementNamed(context, '/search');
+    } catch (error) {
+      setState(() {
+        _errorMessage = error.toString();
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
-  Widget loginButton(String title) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SizedBox(
-        height: 40,
-        width: 100,
-        child: ElevatedButton(
-          onPressed: () {
-            var username=_usernameController.text;
-            var password=_passwordController.text;
-
-          print("login $username $password");
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) =>  DashboardScreen(),
-              ),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            backgroundColor: Colors.lightBlue,
-            shape: const StadiumBorder(),
-            elevation: 8,
-            shadowColor: Colors.black87,
-          ),
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+  void _goToRegistration() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EmailScreen(),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // TextEditingController _usernameController = new TextEditingController();
-    // TextEditingController _passwordController = new TextEditingController();
     return Scaffold(
-        body: Stack(
-      children: [
-        //Image.network("https://e7.pngegg.com/pngimages/667/529/png-clipart-carpool-real-time-ridesharing-transport-passenger-car-driving-logo.png"),
-         
-           
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 100),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              //crossAxisAlignment: CrossAxisAlignment.center,
-              children: [ Image.asset('assets/images/logo-temp.png'),
-                inputField(
-                    'Username', Ionicons.person_outline, _usernameController),
-                inputField('Password', Ionicons.lock_closed_outline,
-                    _passwordController),
-                loginButton('Login'),
-              ],
-            ),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.green.shade300, Colors.green.shade600],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
         ),
-      ],
-    ));
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.car_rental,
+              size: 80,
+              color: Colors.white,
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Welcome to HajUsput!',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                      hintText: 'Username',
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.9),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      hintText: 'Password',
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.9),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  if (_isLoading) CircularProgressIndicator(),
+                  if (_errorMessage != null)
+                    Text(
+                      _errorMessage!,
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _isLoading ? null : _login,
+                    style: ElevatedButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 100, vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.green,
+                    ),
+                    child: Text(
+                      'Login',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  TextButton(
+                    onPressed: _goToRegistration,
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -1,0 +1,58 @@
+version: '3'
+services:
+#mssql docker
+  hajusput-sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd
+      - MSSQL_PID=Developer
+    ports:
+      - 1433:1433
+    expose:
+      - 1433
+    networks:
+      - hajusput
+    
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    environment:
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - hajusput
+  
+  hajusput-api:
+    restart: unless-stopped
+    build:
+      context: .
+    environment:
+      - ConnectionStrings:DefaultConnection=Server=hajusput-sql,1433;Database=hajUsputDatabase;User=sa;Password=YourStrong!Passw0rd;ConnectRetryCount=0; TrustServerCertificate=True
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 7089:7089
+    networks:
+      - hajusput
+    links:
+      - hajusput-sql
+    depends_on:
+      - hajusput-sql
+      - rabbitmq
+
+  hajusput-console:
+    restart: unless-stopped
+    build:
+      context: ./ehajUsput.Subscriber
+    environment:
+    networks:
+      - hajusput
+    depends_on:
+      - rabbitmq
+ 
+networks:
+  hajusput:
+    driver: bridge 

@@ -1,0 +1,12 @@
+﻿using hajUsput.Model;
+using hajUsput.Model.Requests;
+using hajUsput.Model.SearchObjects;
+
+namespace hajUsput.Services
+{
+    public interface ILocationService : ICRUDService<Location, LocationSearchObject, LocationInsertRequest, LocationUpdateRequest>
+    {
+        public Task<int?> GetLocationIdByCityAsync(string city);
+
+    }
+}

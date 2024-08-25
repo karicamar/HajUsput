@@ -28,6 +28,9 @@ namespace hajUsput.Services
             CreateMap<Model.Requests.RideUpdateRequest, Database.Ride>();
 
             CreateMap<Database.Gender, Model.Gender>();
+            CreateMap<Database.Preference, Model.Preference>();
+            CreateMap<Model.Requests.PreferenceUpsertRequest, Database.Preference>();
+
 
             CreateMap<Database.Booking, Model.Booking>();
             CreateMap<Model.Requests.BookingInsertRequest, Database.Booking>();
@@ -44,6 +47,10 @@ namespace hajUsput.Services
             CreateMap<Database.Payment, Model.Payment>();
             CreateMap<Model.Requests.PaymentInsertRequest, Database.Payment>();
             CreateMap<Model.Requests.PaymentUpdateRequest, Database.Payment>();
+
+            CreateMap<Database.Location, Model.Location>();
+            CreateMap<Model.Requests.LocationInsertRequest, Database.Location>();
+            CreateMap<Model.Requests.LocationUpdateRequest, Database.Location>();
         }
     }
 }

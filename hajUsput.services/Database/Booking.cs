@@ -14,8 +14,10 @@ public partial class Booking
     public string? BookingStatus { get; set; }
 
     public DateTime? BookingDate { get; set; }
+    public int? PaymentId { get; set; }
 
     public virtual User? Passenger { get; set; }
 
     public virtual Ride? Ride { get; set; }
+    public virtual Payment? Payment { get; set; }
 }

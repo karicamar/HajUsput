@@ -13,6 +13,9 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       json['email'] as String,
       json['phoneNumber'] as String?,
       (json['genderId'] as num?)?.toInt(),
+      json['username'] as String?,
+      json['password'] as String?,
+      json['isBlocked'] as bool?,
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -22,4 +25,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'email': instance.email,
       'phoneNumber': instance.phoneNumber,
       'genderId': instance.genderId,
+      'username': instance.username,
+      'password': instance.password,
+      'isBlocked': instance.isBlocked,
     };

@@ -36,10 +36,11 @@ public partial class _180072Context : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<UserRole> UserRoles { get; set; }
+    public virtual DbSet<Preference> Preferences { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Data Source=localhost, 1433;Initial Catalog=180072; user=sa; Password=yourStrong(!)Password; TrustServerCertificate=True");
+    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+    //        => optionsBuilder.UseSqlServer("Data Source=localhost, 1433;Initial Catalog=180072; user=sa; Password=yourStrong(!)Password; TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -48,7 +49,7 @@ public partial class _180072Context : DbContext
             entity.HasKey(e => e.BookingId).HasName("PK__Bookings__73951AED68E99F23");
 
             entity.Property(e => e.BookingId);
-            entity.Property(e => e.BookingDate).HasColumnType("date");
+            entity.Property(e => e.BookingDate).HasColumnType("datetime");
             entity.Property(e => e.BookingStatus)
                 .HasMaxLength(20)
                 .IsUnicode(false);
@@ -131,7 +132,7 @@ public partial class _180072Context : DbContext
 
             entity.Property(e => e.PaymentId);
             entity.Property(e => e.Amount).HasColumnType("decimal(10, 2)");
-            entity.Property(e => e.PaymentDate).HasColumnType("date");
+            entity.Property(e => e.PaymentDate).HasColumnType("datetime");
             entity.Property(e => e.PaymentStatus)
                 .HasMaxLength(20)
                 .IsUnicode(false);
@@ -151,15 +152,13 @@ public partial class _180072Context : DbContext
 
             entity.Property(e => e.ReviewId);
             entity.Property(e => e.Comments).HasColumnType("text");
-            entity.Property(e => e.ReviewDate).HasColumnType("date");
+            entity.Property(e => e.ReviewDate).HasColumnType("datetime");
 
             entity.HasOne(d => d.Reviewer).WithMany(p => p.ReviewRatings)
                 .HasForeignKey(d => d.ReviewerId)
                 .HasConstraintName("FK__ReviewRat__Revie__5070F446");
 
-            entity.HasOne(d => d.Ride).WithMany(p => p.ReviewRatings)
-                .HasForeignKey(d => d.RideId)
-                .HasConstraintName("FK__ReviewRat__RideI__4F7CD00D");
+            
         });
 
         modelBuilder.Entity<Ride>(entity =>
@@ -167,7 +166,7 @@ public partial class _180072Context : DbContext
             entity.HasKey(e => e.RideId).HasName("PK__Rides__C5B8C4F4C377711F");
 
             entity.Property(e => e.RideId);
-            entity.Property(e => e.DepartureDate).HasColumnType("date");
+            entity.Property(e => e.DepartureDate).HasColumnType("datetime");
             entity.Property(e => e.RideStatus)
                 .HasMaxLength(20)
                 .IsUnicode(false);
@@ -218,7 +217,7 @@ public partial class _180072Context : DbContext
             entity.Property(e => e.PhoneNumber)
                 .HasMaxLength(20)
                 .IsUnicode(false);
-            entity.Property(e => e.RegistrationDate).HasColumnType("date");
+            entity.Property(e => e.RegistrationDate).HasColumnType("datetime");
             entity.Property(e => e.Username)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -266,8 +265,8 @@ public partial class _180072Context : DbContext
         );
 
         modelBuilder.Entity<Location>().HasData(
-            new Location { LocationId = 1, City = "New York", Country = "USA" },
-            new Location { LocationId = 2, City = "Los Angeles", Country = "USA" }
+            new Location { LocationId = 1, City = "Frankfurt", Country = "Germany" },
+            new Location { LocationId = 2, City = "Tuzla", Country = "BiH" }
         );
 
         modelBuilder.Entity<Car>().HasData(
@@ -287,7 +286,7 @@ public partial class _180072Context : DbContext
         );
 
         modelBuilder.Entity<ReviewRating>().HasData(
-            new ReviewRating { ReviewId = 1, Comments = "Great ride!", ReviewDate = DateTime.Now, ReviewerId = 2, RideId = 1 }
+            new ReviewRating { ReviewId = 1, Comments = "Great ride!", ReviewDate = DateTime.Now, ReviewerId = 2, DriverId = 4, Rating=5 }
         );
 
         modelBuilder.Entity<MessageNotification>().HasData(

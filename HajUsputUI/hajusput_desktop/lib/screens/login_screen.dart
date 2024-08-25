@@ -1,13 +1,7 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/rendering.dart';
-
-import 'package:ionicons/ionicons.dart';
+import 'package:flutter/material.dart';
+import 'package:hajusput_desktop/providers/user_provider.dart';
 import 'dashboard_screen.dart';
 
-import 'package:flutter/material.dart';
-
-TextEditingController _usernameController = new TextEditingController();
-    TextEditingController _passwordController = new TextEditingController();
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -16,29 +10,65 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+  String? _errorMessage;
+
+  Future<void> _login() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      final userId = await UserProvider().login(
+        _usernameController.text,
+        _passwordController.text,
+      );
+      print("Logged in user ID: $userId");
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => DashboardScreen()),
+      );
+    } catch (error) {
+      setState(() {
+        _errorMessage = error.toString();
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   Widget inputField(
-      String hint, IconData iconData, TextEditingController controller) {
+      String hint, IconData iconData, TextEditingController controller,
+      {bool obscureText = false}) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
       child: SizedBox(
-        height: 40,
-        width: 300,
+        width: 300, // Fixed width for the input fields
         child: Material(
           elevation: 8,
           shadowColor: Colors.black87,
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(30),
           child: TextField(
-            textAlignVertical: TextAlignVertical.bottom,
+            textAlignVertical: TextAlignVertical.center,
+            obscureText: obscureText,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
                 borderSide: BorderSide.none,
               ),
               filled: true,
-              fillColor: Colors.white,
+              fillColor: Colors.white.withOpacity(0.9),
               hintText: hint,
               prefixIcon: Icon(iconData),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             ),
             controller: controller,
           ),
@@ -51,24 +81,17 @@ class _LoginScreenState extends State<LoginScreen> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SizedBox(
-        height: 40,
-        width: 100,
+        height: 50,
+        width: 200, // Fixed width for the login button
         child: ElevatedButton(
-          onPressed: () {
-            var username=_usernameController.text;
-            var password=_passwordController.text;
-
-          print("login $username $password");
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) =>  DashboardScreen(),
-              ),
-            );
-          },
+          onPressed: _isLoading ? null : _login,
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 14),
-            backgroundColor: Colors.lightBlue,
-            shape: const StadiumBorder(),
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.green,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
             elevation: 8,
             shadowColor: Colors.black87,
           ),
@@ -86,31 +109,62 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TextEditingController _usernameController = new TextEditingController();
-    // TextEditingController _passwordController = new TextEditingController();
     return Scaffold(
-        body: Stack(
-      children: [
-        //Image.network("https://e7.pngegg.com/pngimages/667/529/png-clipart-carpool-real-time-ridesharing-transport-passenger-car-driving-logo.png"),
-         
-           
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 100),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.green.shade300, Colors.green.shade600],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            // Ensure the content is scrollable
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              //crossAxisAlignment: CrossAxisAlignment.center,
-              children: [ Image.asset('assets/images/logo-temp.png'),
+              children: [
+                Icon(
+                  Icons.car_rental,
+                  size: 80,
+                  color: Colors.white,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Welcome to HajUsput!',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
                 inputField(
-                    'Username', Ionicons.person_outline, _usernameController),
-                inputField('Password', Ionicons.lock_closed_outline,
-                    _passwordController),
+                    'Username', Icons.person_outline, _usernameController),
+                inputField('Password', Icons.lock_outline, _passwordController,
+                    obscureText: true),
+                if (_isLoading) CircularProgressIndicator(),
+                if (_errorMessage != null)
+                  Text(
+                    _errorMessage!,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                const SizedBox(height: 20),
                 loginButton('Login'),
               ],
             ),
           ),
         ),
-      ],
-    ));
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }

@@ -11,5 +11,7 @@ namespace hajUsput.Model.SearchObjects
 
         public string FTS { get; set; }
 
+        public bool? isBlocked { get; set; }
+
     }
 }

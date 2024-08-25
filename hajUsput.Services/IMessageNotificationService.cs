@@ -12,8 +12,10 @@ namespace hajUsput.Services
 
     {
         // Model.User Login(string username, string password);
-       
 
+
+        Task<List<Model.MessageNotification>> GetMessagesForUser(int userId);
+        Task<Model.MessageNotification> SendMessage(MessageNotificationInsertRequest request);
 
 
     }

@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'package:hajusput_mobile/utils/utils.dart';
+import 'package:hajusput_mobile/utils/user_session.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:hajusput_mobile/models/search_result.dart';
@@ -13,9 +12,10 @@ abstract class BaseProvider<T> with ChangeNotifier {
   BaseProvider(String endpoint) {
     _endpoint = endpoint;
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "https://10.0.2.2:7089/");
+        defaultValue: "https://192.168.1.7:7089/");
   }
 
+  String get baseUrl => _baseUrl!;
   Future<SearchResult<T>> get({dynamic filter}) async {
     var url = "$_baseUrl$_endpoint";
 
@@ -47,20 +47,44 @@ abstract class BaseProvider<T> with ChangeNotifier {
     // print("response: ${response.request} ${response.statusCode}, ${response.body}");
   }
 
+  Future<T> getById(int id) async {
+    var url = "$_baseUrl$_endpoint/$id";
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
+    var response = await http.get(uri, headers: headers);
+
+    print("Request URL: $url");
+    print("Request Headers: $headers");
+    if (isValidResponse(response)) {
+      var data = jsonDecode(response.body);
+      if (data == null) {
+        throw new Exception("Response data is null");
+      }
+      return fromJson(data);
+    } else {
+      throw new Exception("Unknown error");
+    }
+  }
+
   Future<T> insert(dynamic request) async {
     var url = "$_baseUrl$_endpoint";
     var uri = Uri.parse(url);
     var headers = createHeaders();
 
     var jsonRequest = jsonEncode(request);
+
     var response = await http.post(uri, headers: headers, body: jsonRequest);
     print("Request URL: $url");
     print("Request Headers: $headers");
     print("Request Body: $jsonRequest");
     if (isValidResponse(response)) {
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
       var data = jsonDecode(response.body);
       return fromJson(data);
     } else {
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
       throw new Exception("Unknown error");
     }
   }
@@ -78,6 +102,9 @@ abstract class BaseProvider<T> with ChangeNotifier {
     print("Request Body: $jsonRequest");
     if (isValidResponse(response)) {
       var data = jsonDecode(response.body);
+      if (data == null) {
+        throw new Exception("Response data is null");
+      }
       return fromJson(data);
     } else {
       throw new Exception("Unknown error");
@@ -120,8 +147,8 @@ abstract class BaseProvider<T> with ChangeNotifier {
   }
 
   Map<String, String> createHeaders() {
-    String username = Authorization.username ?? "";
-    String password = Authorization.password ?? "";
+    String username = UserSession.username ?? "";
+    String password = UserSession.password ?? "";
 
     print("passed creds: $username, $password");
 

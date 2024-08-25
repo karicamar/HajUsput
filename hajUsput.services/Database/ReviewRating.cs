@@ -7,7 +7,7 @@ public partial class ReviewRating
 {
     public int ReviewId { get; set; }
 
-    public int? RideId { get; set; }
+    public int? DriverId { get; set; }
 
     public int? ReviewerId { get; set; }
 
@@ -19,5 +19,5 @@ public partial class ReviewRating
 
     public virtual User? Reviewer { get; set; }
 
-    public virtual Ride? Ride { get; set; }
+    public virtual User? Driver { get; set; }
 }

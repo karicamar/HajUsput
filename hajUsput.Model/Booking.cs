@@ -17,6 +17,8 @@ namespace hajUsput.Model
         public string BookingStatus { get; set; }
 
         public DateTime? BookingDate { get; set; }
+        public int? PaymentId { get; set; }
+
 
         //public string LicensePlateNumber { get; set; }
 

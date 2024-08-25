@@ -18,7 +18,8 @@ namespace hajUsput.Model.Requests
 
         public DateTime DepartureDate { get; set; }
 
-
+        public double Distance { get; set; }
+        public double Duration { get; set; }
         public int AvailableSeats { get; set; }
 
         public string RideStatus { get; set; }

@@ -22,8 +22,7 @@ namespace hajUsput.Model
 
         public string PhoneNumber { get; set; }
 
-
-       // public DateTime? RegistrationDate { get; set; }
+        // public DateTime? RegistrationDate { get; set; }
         //public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 
         //public virtual ICollection<Car> Cars { get; set; } = new List<Car>();
@@ -39,6 +38,7 @@ namespace hajUsput.Model
         //public virtual ICollection<ReviewRating> ReviewRatings { get; set; } = new List<ReviewRating>();
 
         //public virtual ICollection<Ride> Rides { get; set; } = new List<Ride>();
+        public bool IsBlocked { get; set; }
 
         public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
     }

@@ -20,6 +20,26 @@ namespace hajUsput.Services
         {
 
         }
-        
+        public async Task<List<Model.MessageNotification>> GetMessagesForUser(int userId)
+        {
+            var query = _context.Set<Database.MessageNotification>().AsQueryable();
+
+            query = query.Where(x => x.ReceiverId == userId || x.SenderId == userId);
+
+            var list = await query.ToListAsync();
+
+            return _mapper.Map<List<Model.MessageNotification>>(list);
+        }
+
+        public async Task<Model.MessageNotification> SendMessage(MessageNotificationInsertRequest request)
+        {
+            var entity = _mapper.Map<Database.MessageNotification>(request);
+
+            _context.Set<Database.MessageNotification>().Add(entity);
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<Model.MessageNotification>(entity);
+        }
+
     }
 }

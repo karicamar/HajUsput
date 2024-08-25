@@ -8,8 +8,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hajUsput.Services", "..\hajUsput.services\hajUsput.Services.csproj", "{D02EFB37-5C7E-4166-80B9-60A3CD810D3D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hajUsput.Model", "..\hajUsput.Model\hajUsput.Model.csproj", "{9A49A0F2-CC16-48A9-B222-6F6366D75309}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0C2DFDB7-C292-44B8-BF22-96190A112A10} = {0C2DFDB7-C292-44B8-BF22-96190A112A10}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hajUsput.Subscriber", "..\hajUsput.Subscriber\hajUsput.Subscriber.csproj", "{97B8FDC0-A55B-4E9C-8D84-BF197B9EEED4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hajUsput.ML", "..\hajUsput.ML\hajUsput.ML.csproj", "{0C2DFDB7-C292-44B8-BF22-96190A112A10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +38,10 @@ Global
 		{97B8FDC0-A55B-4E9C-8D84-BF197B9EEED4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97B8FDC0-A55B-4E9C-8D84-BF197B9EEED4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97B8FDC0-A55B-4E9C-8D84-BF197B9EEED4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C2DFDB7-C292-44B8-BF22-96190A112A10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C2DFDB7-C292-44B8-BF22-96190A112A10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C2DFDB7-C292-44B8-BF22-96190A112A10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C2DFDB7-C292-44B8-BF22-96190A112A10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

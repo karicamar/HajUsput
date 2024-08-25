@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using hajUsput.Model;
 using hajUsput.Model.Requests;
 using hajUsput.Model.SearchObjects;
 using hajUsput.Services.Database;
@@ -20,6 +21,37 @@ namespace hajUsput.Services
         {
 
         }
-        
+
+        public async Task<double?> GetDriverRatingAsync(int driverId)
+        {
+            var reviews = await _context.ReviewRatings.Where(r => r.DriverId == driverId).ToListAsync();
+            if (reviews.Count == 0)
+            {
+                return null;
+            }
+            return reviews.Average(r => r.Rating);
+        }
+        public async Task<Dictionary<string, List<Model.ReviewRating>>> GetRatingsByUser(int userId)
+        {
+            var reviewRatings = await _context.ReviewRatings
+                .Where(r => r.DriverId == userId || r.ReviewerId == userId)
+                .ToListAsync();
+
+            // Separate into given and received reviews
+            var givenReviews = reviewRatings.Where(r => r.ReviewerId == userId).ToList();
+            var receivedReviews = reviewRatings.Where(r => r.DriverId == userId).ToList();
+
+            // Map the database models to the DTO models
+            var mappedGivenReviews = _mapper.Map<List<Model.ReviewRating>>(givenReviews);
+            var mappedReceivedReviews = _mapper.Map<List<Model.ReviewRating>>(receivedReviews);
+
+            // Create and return the dictionary
+            return new Dictionary<string, List<Model.ReviewRating>>
+            {
+                { "GivenReviews", mappedGivenReviews },
+                { "ReceivedReviews", mappedReceivedReviews }
+            };
+        }
+
     }
 }

@@ -15,12 +15,13 @@ public partial class Ride
 
     public DateTime DepartureDate { get; set; }
 
+    public double Distance { get; set; } 
+    public double Duration { get; set; }
     public int? AvailableSeats { get; set; }
 
     public string? RideStatus { get; set; }
 
     public int? Price { get; set; }
-
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 
     public virtual Location? DepartureLocation { get; set; }

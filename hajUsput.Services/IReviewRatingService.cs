@@ -12,7 +12,10 @@ namespace hajUsput.Services
 
     {
         // Model.User Login(string username, string password);
-       
+        public Task<double?> GetDriverRatingAsync(int driverId);
+
+        public Task<Dictionary<string, List<Model.ReviewRating>>> GetRatingsByUser(int userId);
+
 
 
 

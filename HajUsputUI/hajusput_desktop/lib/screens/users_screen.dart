@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:hajusput_desktop/models/gender.dart';
 import 'package:hajusput_desktop/providers/gender_provider.dart';
+import 'package:hajusput_desktop/screens/user_details_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:hajusput_desktop/models/search_result.dart';
 import 'package:hajusput_desktop/models/user.dart';
@@ -27,7 +28,7 @@ class _UsersBodyState extends State<UsersBody> {
   final _formKey = GlobalKey<FormBuilderState>();
   late UserProvider _userProvider;
   late GenderProvider _genderProvider;
-
+  bool _includeBlockedUsers = false;
   SearchResult<User>? result;
   SearchResult<Gender>? genderResult;
 
@@ -42,7 +43,10 @@ class _UsersBodyState extends State<UsersBody> {
   }
 
   Future<void> _asyncMethod() async {
-    result = await _userProvider.get(filter: {'fts': _controller.text});
+    result = await _userProvider.get(filter: {
+      'fts': _controller.text,
+      'isBlocked': _includeBlockedUsers ? null : false
+    });
     genderResult = await _genderProvider.get();
     if (mounted) {
       setState(() {});
@@ -51,10 +55,59 @@ class _UsersBodyState extends State<UsersBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
       child: Column(
-        children: [_buildSearch(), _buildDataListView()],
+        children: [
+          _buildSearch(),
+          SizedBox(height: 10),
+          _buildIncludeBlockedCheckbox(),
+          SizedBox(height: 20),
+          _buildDataListView(),
+        ],
       ),
+    );
+  }
+
+  Widget _buildSearch() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                labelText: "Search users",
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onChanged: (String value) {
+                _asyncMethod();
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildIncludeBlockedCheckbox() {
+    return Row(
+      children: [
+        Checkbox(
+          value: _includeBlockedUsers,
+          onChanged: (bool? value) {
+            setState(() {
+              _includeBlockedUsers = value ?? false;
+            });
+            _asyncMethod();
+          },
+        ),
+        Text("Include Blocked Users"),
+      ],
     );
   }
 
@@ -67,40 +120,47 @@ class _UsersBodyState extends State<UsersBody> {
             DataColumn(
               label: Text(
                 'Name',
-                style: TextStyle(fontStyle: FontStyle.italic),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             DataColumn(
               label: Text(
                 'Surname',
-                style: TextStyle(fontStyle: FontStyle.italic),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             DataColumn(
               label: Text(
                 'Email',
-                style: TextStyle(fontStyle: FontStyle.italic),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             DataColumn(
               label: Text(
-                'Phone number',
-                style: TextStyle(fontStyle: FontStyle.italic),
+                'Phone Number',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Actions',
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
           ],
           rows: result?.result
-                  .map((User e) => DataRow(
+                  .map((User user) => DataRow(
                         onSelectChanged: (selected) {
                           if (selected == true) {
-                            _dialogBuilder(context, e);
+                            _dialogBuilder(context, user);
                           }
                         },
                         cells: [
-                          DataCell(Text(e.firstName ?? "")),
-                          DataCell(Text(e.lastName ?? "")),
-                          DataCell(Text(e.email)),
-                          DataCell(Text(e.phoneNumber ?? "")),
+                          DataCell(Text(user.firstName)),
+                          DataCell(Text(user.lastName)),
+                          DataCell(Text(user.email)),
+                          DataCell(Text(user.phoneNumber ?? "")),
+                          DataCell(_buildActionsColumn(user)),
                         ],
                       ))
                   .toList() ??
@@ -108,6 +168,94 @@ class _UsersBodyState extends State<UsersBody> {
         ),
       ),
     );
+  }
+
+  Widget _buildActionsColumn(User user) {
+    return Row(
+      children: [
+        IconButton(
+          icon: Icon(Icons.info, color: Colors.blue),
+          onPressed: () {
+            UserDetailsScreen(
+              user: user,
+            );
+          },
+        ),
+        IconButton(
+          icon: Icon(
+            user.isBlocked == true ? Icons.lock_open : Icons.block,
+            color: user.isBlocked == true ? Colors.green : Colors.red,
+          ),
+          onPressed: () {
+            _toggleBlockUser(user);
+          },
+        ),
+      ],
+    );
+  }
+
+  Future<void> _confirmBlockUser(BuildContext context, User user) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Block User'),
+          content: Text('Are you sure you want to block this user?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+            ),
+            ElevatedButton(
+              child: Text('Block'),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result == true) {
+      await _toggleBlockUser(user);
+    }
+  }
+
+  Future<void> _toggleBlockUser(User user) async {
+    try {
+      if (user.isBlocked == true) {
+        // Unblock the user
+        await _userProvider.blockUser(user.userId!);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text('${user.firstName} ${user.lastName} has been unblocked.'),
+        ));
+      } else {
+        // Block the user
+        await _userProvider.blockUser(user.userId!);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('${user.firstName} ${user.lastName} has been blocked.'),
+        ));
+      }
+      _asyncMethod();
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Failed to update user status: $e'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   Future<void> _dialogBuilder(BuildContext context, User user) async {
@@ -160,7 +308,7 @@ class _UsersBodyState extends State<UsersBody> {
                             .map((item) => DropdownMenuItem(
                                   alignment: AlignmentDirectional.center,
                                   value: item.genderId.toString(),
-                                  child: Text(item.genderName ?? ""),
+                                  child: Text(item.genderName),
                                 ))
                             .toList() ??
                         [],
@@ -206,16 +354,16 @@ class _UsersBodyState extends State<UsersBody> {
         await _userProvider.update(userId, request);
       }
       _asyncMethod();
-    } on Exception catch (e) {
+    } catch (e) {
       showDialog(
         context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: Text("Error"),
-          content: Text(e.toString()),
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Failed to save user: $e'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text("OK"),
+              child: Text('OK'),
             ),
           ],
         ),
@@ -223,26 +371,10 @@ class _UsersBodyState extends State<UsersBody> {
     }
   }
 
-  Widget _buildSearch() {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 400,
-            child: TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                labelText: "Search",
-                prefixIcon: Icon(Icons.search),
-              ),
-              onChanged: (String value) {
-                _asyncMethod();
-              },
-            ),
-          ),
-        ],
-      ),
-    );
+  String? _getGenderName(int? genderId) {
+    if (genderId == null) return "N/A";
+    return genderResult?.result
+        .firstWhere((gender) => gender.genderId == genderId)
+        .genderName;
   }
 }

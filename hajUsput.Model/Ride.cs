@@ -18,15 +18,14 @@ namespace hajUsput.Model
 
         public DateTime DepartureDate { get; set; }
 
+        public double Distance { get; set; } 
+        public double Duration { get; set; }
         public int? AvailableSeats { get; set; }
 
         public string RideStatus { get; set; }
 
         public int? Price { get; set; }
 
-        //public string LicensePlateNumber { get; set; }
-
-        //public virtual User? Driver { get; set; }
     }
 
 }

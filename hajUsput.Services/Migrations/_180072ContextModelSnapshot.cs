@@ -31,7 +31,7 @@ namespace hajUsput.Services.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingId"));
 
                     b.Property<DateTime?>("BookingDate")
-                        .HasColumnType("date");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("BookingStatus")
                         .HasMaxLength(20)
@@ -39,6 +39,9 @@ namespace hajUsput.Services.Migrations
                         .HasColumnType("varchar(20)");
 
                     b.Property<int?>("PassengerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PaymentId")
                         .HasColumnType("int");
 
                     b.Property<int?>("RideId")
@@ -49,6 +52,8 @@ namespace hajUsput.Services.Migrations
 
                     b.HasIndex("PassengerId");
 
+                    b.HasIndex("PaymentId");
+
                     b.HasIndex("RideId");
 
                     b.ToTable("Bookings");
@@ -57,7 +62,7 @@ namespace hajUsput.Services.Migrations
                         new
                         {
                             BookingId = 1,
-                            BookingDate = new DateTime(2024, 7, 3, 20, 46, 19, 466, DateTimeKind.Local).AddTicks(5325),
+                            BookingDate = new DateTime(2024, 8, 19, 15, 2, 8, 484, DateTimeKind.Local).AddTicks(5643),
                             BookingStatus = "Confirmed",
                             PassengerId = 2,
                             RideId = 1
@@ -179,14 +184,14 @@ namespace hajUsput.Services.Migrations
                         new
                         {
                             LocationId = 1,
-                            City = "New York",
-                            Country = "USA"
+                            City = "Frankfurt",
+                            Country = "Germany"
                         },
                         new
                         {
                             LocationId = 2,
-                            City = "Los Angeles",
-                            Country = "USA"
+                            City = "Tuzla",
+                            Country = "BiH"
                         });
                 });
 
@@ -224,7 +229,7 @@ namespace hajUsput.Services.Migrations
                         {
                             MessageId = 1,
                             MessageContent = "Your ride is scheduled.",
-                            MessageDate = new DateTime(2024, 7, 3, 20, 46, 19, 466, DateTimeKind.Local).AddTicks(5773),
+                            MessageDate = new DateTime(2024, 8, 19, 15, 2, 8, 484, DateTimeKind.Local).AddTicks(5729),
                             ReceiverId = 2,
                             SenderId = 1
                         });
@@ -245,7 +250,10 @@ namespace hajUsput.Services.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("PaymentDate")
-                        .HasColumnType("date");
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentStatus")
                         .HasMaxLength(20)
@@ -270,10 +278,42 @@ namespace hajUsput.Services.Migrations
                             PaymentId = 1,
                             Amount = 20.00m,
                             PayerId = 2,
-                            PaymentDate = new DateTime(2024, 7, 3, 20, 46, 19, 466, DateTimeKind.Local).AddTicks(5427),
+                            PaymentDate = new DateTime(2024, 8, 19, 15, 2, 8, 484, DateTimeKind.Local).AddTicks(5677),
                             PaymentStatus = "Completed",
                             RideId = 1
                         });
+                });
+
+            modelBuilder.Entity("hajUsput.Services.Database.Preference", b =>
+                {
+                    b.Property<int>("PreferenceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PreferenceId"));
+
+                    b.Property<string>("AllowsMusic")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AllowsPets")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AllowsSmoking")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IsChatty")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PreferenceId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
+
+                    b.ToTable("Preferences");
                 });
 
             modelBuilder.Entity("hajUsput.Services.Database.ReviewRating", b =>
@@ -287,11 +327,14 @@ namespace hajUsput.Services.Migrations
                     b.Property<string>("Comments")
                         .HasColumnType("text");
 
+                    b.Property<int?>("DriverId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("Rating")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ReviewDate")
-                        .HasColumnType("date");
+                        .HasColumnType("datetime");
 
                     b.Property<int?>("ReviewerId")
                         .HasColumnType("int");
@@ -301,6 +344,8 @@ namespace hajUsput.Services.Migrations
 
                     b.HasKey("ReviewId")
                         .HasName("PK__ReviewRa__74BC79CE3F044E1B");
+
+                    b.HasIndex("DriverId");
 
                     b.HasIndex("ReviewerId");
 
@@ -313,9 +358,9 @@ namespace hajUsput.Services.Migrations
                         {
                             ReviewId = 1,
                             Comments = "Great ride!",
-                            ReviewDate = new DateTime(2024, 7, 3, 20, 46, 19, 466, DateTimeKind.Local).AddTicks(5662),
-                            ReviewerId = 2,
-                            RideId = 1
+                            DriverId = 4,
+                            ReviewDate = new DateTime(2024, 8, 19, 15, 2, 8, 484, DateTimeKind.Local).AddTicks(5702),
+                            ReviewerId = 2
                         });
                 });
 
@@ -331,7 +376,7 @@ namespace hajUsput.Services.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DepartureDate")
-                        .HasColumnType("date");
+                        .HasColumnType("datetime");
 
                     b.Property<int?>("DepartureLocationId")
                         .HasColumnType("int");
@@ -339,8 +384,14 @@ namespace hajUsput.Services.Migrations
                     b.Property<int?>("DestinationLocationId")
                         .HasColumnType("int");
 
+                    b.Property<double>("Distance")
+                        .HasColumnType("float");
+
                     b.Property<int?>("DriverId")
                         .HasColumnType("int");
+
+                    b.Property<double>("Duration")
+                        .HasColumnType("float");
 
                     b.Property<int?>("Price")
                         .HasColumnType("int");
@@ -365,10 +416,12 @@ namespace hajUsput.Services.Migrations
                         new
                         {
                             RideId = 1,
-                            DepartureDate = new DateTime(2024, 7, 3, 20, 46, 19, 466, DateTimeKind.Local).AddTicks(4827),
+                            DepartureDate = new DateTime(2024, 8, 19, 15, 2, 8, 484, DateTimeKind.Local).AddTicks(5616),
                             DepartureLocationId = 1,
                             DestinationLocationId = 2,
+                            Distance = 0.0,
                             DriverId = 1,
+                            Duration = 0.0,
                             RideStatus = "Scheduled"
                         });
                 });
@@ -455,7 +508,7 @@ namespace hajUsput.Services.Migrations
                         .HasColumnType("varchar(20)");
 
                     b.Property<DateTime?>("RegistrationDate")
-                        .HasColumnType("date");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -482,7 +535,7 @@ namespace hajUsput.Services.Migrations
                             PasswordHash = "adminhash",
                             PasswordSalt = "adminsalt",
                             PhoneNumber = "1234567890",
-                            RegistrationDate = new DateTime(2024, 7, 3, 20, 46, 19, 466, DateTimeKind.Local).AddTicks(4625),
+                            RegistrationDate = new DateTime(2024, 8, 19, 15, 2, 8, 484, DateTimeKind.Local).AddTicks(5462),
                             Username = "admin"
                         },
                         new
@@ -496,7 +549,7 @@ namespace hajUsput.Services.Migrations
                             PasswordHash = "johnhash",
                             PasswordSalt = "johnsalt",
                             PhoneNumber = "0987654321",
-                            RegistrationDate = new DateTime(2024, 7, 3, 20, 46, 19, 466, DateTimeKind.Local).AddTicks(4694),
+                            RegistrationDate = new DateTime(2024, 8, 19, 15, 2, 8, 484, DateTimeKind.Local).AddTicks(5518),
                             Username = "johndoe"
                         });
                 });
@@ -546,12 +599,18 @@ namespace hajUsput.Services.Migrations
                         .HasForeignKey("PassengerId")
                         .HasConstraintName("FK__Bookings__Passen__49C3F6B7");
 
+                    b.HasOne("hajUsput.Services.Database.Payment", "Payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentId");
+
                     b.HasOne("hajUsput.Services.Database.Ride", "Ride")
                         .WithMany("Bookings")
                         .HasForeignKey("RideId")
                         .HasConstraintName("FK__Bookings__RideId__48CFD27E");
 
                     b.Navigation("Passenger");
+
+                    b.Navigation("Payment");
 
                     b.Navigation("Ride");
                 });
@@ -600,21 +659,33 @@ namespace hajUsput.Services.Migrations
                     b.Navigation("Ride");
                 });
 
+            modelBuilder.Entity("hajUsput.Services.Database.Preference", b =>
+                {
+                    b.HasOne("hajUsput.Services.Database.User", "user")
+                        .WithOne("Preference")
+                        .HasForeignKey("hajUsput.Services.Database.Preference", "UserId");
+
+                    b.Navigation("user");
+                });
+
             modelBuilder.Entity("hajUsput.Services.Database.ReviewRating", b =>
                 {
+                    b.HasOne("hajUsput.Services.Database.User", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId");
+
                     b.HasOne("hajUsput.Services.Database.User", "Reviewer")
                         .WithMany("ReviewRatings")
                         .HasForeignKey("ReviewerId")
                         .HasConstraintName("FK__ReviewRat__Revie__5070F446");
 
-                    b.HasOne("hajUsput.Services.Database.Ride", "Ride")
+                    b.HasOne("hajUsput.Services.Database.Ride", null)
                         .WithMany("ReviewRatings")
-                        .HasForeignKey("RideId")
-                        .HasConstraintName("FK__ReviewRat__RideI__4F7CD00D");
+                        .HasForeignKey("RideId");
+
+                    b.Navigation("Driver");
 
                     b.Navigation("Reviewer");
-
-                    b.Navigation("Ride");
                 });
 
             modelBuilder.Entity("hajUsput.Services.Database.Ride", b =>
@@ -705,6 +776,8 @@ namespace hajUsput.Services.Migrations
                     b.Navigation("MessageNotificationSenders");
 
                     b.Navigation("Payments");
+
+                    b.Navigation("Preference");
 
                     b.Navigation("ReviewRatings");
 

@@ -7,8 +7,10 @@ namespace hajUsput.Model.SearchObjects
     public class RideSearchObject : BaseSearchObject
     {
 
-        
-        public string location { get; set; }
+        public int? DepartureLocationId { get; set; }
+        public int? DestinationLocationId { get; set; }
+
+        public DateTime? Date { get; set; }
         public string FTS { get; set; }
 
     }

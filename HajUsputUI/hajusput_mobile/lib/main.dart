@@ -1,18 +1,41 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:hajusput_mobile/providers/booking_provider.dart';
 import 'package:hajusput_mobile/providers/gender_provider.dart';
+import 'package:hajusput_mobile/providers/location_provider.dart';
+import 'package:hajusput_mobile/providers/message_provider.dart';
+import 'package:hajusput_mobile/providers/payment_provider.dart';
+import 'package:hajusput_mobile/providers/review_provider.dart';
+import 'package:hajusput_mobile/providers/ride_provider.dart';
 import 'package:hajusput_mobile/providers/user_provider.dart';
+import 'package:hajusput_mobile/screens/inbox_screen.dart';
 import 'package:hajusput_mobile/screens/login_screen.dart';
-import 'package:hajusput_mobile/utils/utils.dart';
+import 'package:hajusput_mobile/screens/profile_screen.dart';
+import 'package:hajusput_mobile/screens/publish_screen.dart';
+import 'package:hajusput_mobile/screens/rides_screen.dart';
+import 'package:hajusput_mobile/screens/search_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  dotenv.load();
+  HttpOverrides.global = MyHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = dotenv.env['STRIPE_PUBLISH_KEY'] ?? '';
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => UserProvider()),
       ChangeNotifierProvider(create: (_) => GenderProvider()),
-      //ChangeNotifierProvider(create: (_) => VrsteProizvodaProvider()),
+      ChangeNotifierProvider(create: (_) => RideProvider()),
+      ChangeNotifierProvider(create: (_) => LocationProvider()),
+      ChangeNotifierProvider(create: (_) => MessageProvider()),
+      ChangeNotifierProvider(create: (_) => ReviewProvider()),
+      ChangeNotifierProvider(create: (_) => BookingProvider()),
+      ChangeNotifierProvider(create: (_) => PaymentProvider()),
     ],
-    child: const MyApp(),
+    child: MyApp(),
   ));
 }
 
@@ -26,14 +49,26 @@ class MyApp extends StatelessWidget {
       title: 'Haj Usput!',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        useMaterial3: false,
-        scaffoldBackgroundColor: kBackgroundColor,
-        textTheme: Theme.of(context).textTheme.apply(
-              bodyColor: kPrimaryColor,
-              fontFamily: 'Montserrat',
-            ),
-      ),
-      home: const LoginScreen(),
+          primarySwatch: Colors.blue,
+          //fontFamily: 'Montserrat',
+          fontFamily: 'ClashGrotesk'),
+      home: LoginScreen(),
+      routes: {
+        '/search': (context) => SearchScreen(),
+        '/publish': (context) => PublishScreen(),
+        '/rides': (context) => RidesScreen(),
+        '/inbox': (context) => InboxScreen(),
+        '/profile': (context) => ProfileScreen(),
+      },
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

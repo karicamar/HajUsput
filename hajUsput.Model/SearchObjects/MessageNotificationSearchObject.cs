@@ -7,9 +7,11 @@ namespace hajUsput.Model.SearchObjects
     public class MessageNotificationSearchObject : BaseSearchObject
     {
 
-      
 
-        public string FTS { get; set; }
+        public int? SenderId { get; set; }
+        public int? ReceiverId { get; set; }
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
 
     }
 }
