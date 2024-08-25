@@ -19,7 +19,6 @@ services:
     image: rabbitmq:3.13-management
     container_name: rabbitmq
     restart: unless-stopped
-    environment:
     ports:
       - "15672:15672"
       - "5672:5672"
@@ -46,8 +45,7 @@ services:
   hajusput-console:
     restart: unless-stopped
     build:
-      context: ./ehajUsput.Subscriber
-    environment:
+      context: ./hajUsput.Subscriber
     networks:
       - hajusput
     depends_on:

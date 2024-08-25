@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'users_screen.dart';
 import 'dashboard_screen.dart';
 import 'rides_screen.dart';
-import 'payments_screen.dart';
 import 'reports_screen.dart';
-import 'settings_screen.dart';
 
 class NavigationDrawerScreen extends StatelessWidget {
   @override
@@ -53,16 +51,6 @@ class NavigationDrawerScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Payments'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PaymentsScreen()),
-              );
-            },
-          ),
-          ListTile(
             title: Text('Reports'),
             onTap: () {
               Navigator.pop(context);
@@ -72,20 +60,8 @@ class NavigationDrawerScreen extends StatelessWidget {
               );
             },
           ),
-          ListTile(
-            title: Text('Settings'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SettingsScreen()),
-              );
-            },
-          ),
         ],
       ),
     );
   }
 }
-
-
