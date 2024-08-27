@@ -19,10 +19,10 @@ import 'package:hajusput_mobile/screens/rides_screen.dart';
 import 'package:hajusput_mobile/screens/search_screen.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-  dotenv.load();
-  HttpOverrides.global = MyHttpOverrides();
+void main() async {
+  await dotenv.load(fileName: '.env');
   WidgetsFlutterBinding.ensureInitialized();
+  HttpOverrides.global = MyHttpOverrides();
   Stripe.publishableKey = dotenv.env['STRIPE_PUBLISH_KEY'] ?? '';
   runApp(MultiProvider(
     providers: [

@@ -1,11 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 
-// Colors
-const kBackgroundColor = Color(0xFFD2FFF4);
-const kPrimaryColor = Color(0xFF2D5D70);
-const kSecondaryColor = Color(0xFF265DAB);
 String googleMapsApi = dotenv.env['GOOGLE_API_KEY'] ?? '';
 
 class Authorization {
