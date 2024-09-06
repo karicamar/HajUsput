@@ -1,14 +1,14 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using hajUsput.Services;
 using hajUsput.Services.Database;
-using HajUsput_;
-using HajUsput_.Filters;
+using HajUsput;
+using HajUsput.Filters;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,6 +75,14 @@ builder.Services.AddHangfire(config => config
 
 builder.Services.AddHangfireServer();
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(7089, listenOptions =>
+    {
+        listenOptions.UseHttps(new X509Certificate2("aspnetcore-dev.pfx", "yourpassword"));
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -97,9 +105,8 @@ app.UseHangfireDashboard();
 using (var scope= app.Services.CreateScope())
 {
     var dataContext= scope.ServiceProvider.GetRequiredService<_180072Context>();
-    var conn = dataContext.Database.GetConnectionString();
     dataContext.Database.Migrate();
-
+    
     // Immediate update on application start
     //var rideService = scope.ServiceProvider.GetRequiredService<IRideService>();
     //rideService.ArchiveCompletedRides();

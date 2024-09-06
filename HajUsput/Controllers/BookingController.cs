@@ -7,16 +7,16 @@ using hajUsput.Services.StateMachines;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
 
-namespace HajUsput_.Controllers
+namespace HajUsput.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class BookingController : BaseCRUDController<Booking, hajUsput.Model.SearchObjects.BookingSearchObject, hajUsput.Model.Requests.BookingInsertRequest, hajUsput.Model.Requests.BookingUpdateRequest>
+    public class BookingController : BaseCRUDController<Booking, BookingSearchObject, BookingInsertRequest, BookingUpdateRequest>
 
     {
         private readonly IBookingService _bookingService;
 
-        public BookingController(ILogger<BaseController<Booking, hajUsput.Model.SearchObjects.BookingSearchObject>> logger, IBookingService service) : base(logger,service)
+        public BookingController(ILogger<BaseController<Booking, BookingSearchObject>> logger, IBookingService service) : base(logger, service)
         {
             _bookingService = service;
         }

@@ -6,17 +6,17 @@ using hajUsput.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HajUsput_.Controllers
+namespace HajUsput.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Authorize(Roles = "User,Admin")]
 
-    public class PaymentController : BaseCRUDController<Payment, hajUsput.Model.SearchObjects.PaymentSearchObject, hajUsput.Model.Requests.PaymentInsertRequest, hajUsput.Model.Requests.PaymentUpdateRequest>
+    public class PaymentController : BaseCRUDController<Payment, PaymentSearchObject, PaymentInsertRequest, PaymentUpdateRequest>
 
     {
         private readonly IPaymentService _paymentService;
-        public PaymentController(ILogger<BaseController<Payment, hajUsput.Model.SearchObjects.PaymentSearchObject>> logger, IPaymentService service) : base(logger,service)
+        public PaymentController(ILogger<BaseController<Payment, PaymentSearchObject>> logger, IPaymentService service) : base(logger, service)
         {
             _paymentService = service;
         }

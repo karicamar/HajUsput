@@ -7,17 +7,17 @@ using hajUsput.Services.StateMachines;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HajUsput_.Controllers
+namespace HajUsput.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Authorize(Roles = "User,Admin")]
 
-    public class RideController : BaseCRUDController<Ride, hajUsput.Model.SearchObjects.RideSearchObject, hajUsput.Model.Requests.RideInsertRequest, hajUsput.Model.Requests.RideUpdateRequest>
+    public class RideController : BaseCRUDController<Ride, RideSearchObject, RideInsertRequest, RideUpdateRequest>
 
     {
         private readonly IRideService _rideService;
-        public RideController(ILogger<BaseController<Ride, hajUsput.Model.SearchObjects.RideSearchObject>> logger, IRideService service) : base(logger,service)
+        public RideController(ILogger<BaseController<Ride, RideSearchObject>> logger, IRideService service) : base(logger, service)
         {
             _rideService = service;
         }

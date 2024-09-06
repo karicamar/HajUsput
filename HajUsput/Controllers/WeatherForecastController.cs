@@ -1,6 +1,7 @@
+using HajUsput;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HajUsput_.Controllers
+namespace HajUsput.Controllers
 {
     [ApiController]
     [Route("[controller]")]

@@ -6,22 +6,22 @@ using hajUsput.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HajUsput_.Controllers
+namespace HajUsput.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Authorize(Roles = "User,Admin")]
 
-    public class LocationController : BaseCRUDController<Location, hajUsput.Model.SearchObjects.LocationSearchObject, hajUsput.Model.Requests.LocationInsertRequest, hajUsput.Model.Requests.LocationUpdateRequest>
+    public class LocationController : BaseCRUDController<Location, LocationSearchObject, LocationInsertRequest, LocationUpdateRequest>
 
     {
         private readonly ILocationService _locationService;
 
-        public LocationController(ILogger<BaseController<Location, hajUsput.Model.SearchObjects.LocationSearchObject>> logger, ILocationService service) : base(logger, service)
+        public LocationController(ILogger<BaseController<Location, LocationSearchObject>> logger, ILocationService service) : base(logger, service)
         {
-            _locationService=service;
+            _locationService = service;
         }
-        
+
 
         [HttpPost("checkId")]
         [AllowAnonymous]

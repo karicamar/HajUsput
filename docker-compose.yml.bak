@@ -60,8 +60,6 @@ services:
       - RABBITMQ_USERNAME=guest
       - RABBITMQ_PASSWORD=guest
       - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=aspnetcore-dev.pfx
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=yourpassword
     ports:
       - 7089:7089
     networks:

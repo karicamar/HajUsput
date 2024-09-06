@@ -6,17 +6,17 @@ using hajUsput.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HajUsput_.Controllers
+namespace HajUsput.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Authorize(Roles = "User,Admin")]
 
-    public class MessageNotificationController : BaseCRUDController<MessageNotification, hajUsput.Model.SearchObjects.MessageNotificationSearchObject, hajUsput.Model.Requests.MessageNotificationInsertRequest, hajUsput.Model.Requests.MessageNotificationUpdateRequest>
+    public class MessageNotificationController : BaseCRUDController<MessageNotification, MessageNotificationSearchObject, MessageNotificationInsertRequest, MessageNotificationUpdateRequest>
 
     {
         private readonly IMessageNotificationService _messageNotificationService;
-        public MessageNotificationController(ILogger<BaseController<MessageNotification, hajUsput.Model.SearchObjects.MessageNotificationSearchObject>> logger, IMessageNotificationService service) : base(logger,service)
+        public MessageNotificationController(ILogger<BaseController<MessageNotification, MessageNotificationSearchObject>> logger, IMessageNotificationService service) : base(logger, service)
         {
             _messageNotificationService = service;
         }

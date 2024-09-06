@@ -7,9 +7,9 @@ using System.Text.Encodings.Web;
 using System.Text;
 using hajUsput.Services;
 
-namespace HajUsput_
+namespace HajUsput
 {
-  
+
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
         IUserService _userService;

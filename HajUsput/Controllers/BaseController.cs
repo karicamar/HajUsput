@@ -3,7 +3,7 @@ using hajUsput.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HajUsput_.Controllers
+namespace HajUsput.Controllers
 {
     [Route("[controller]")]
     [Authorize]
@@ -15,7 +15,7 @@ namespace HajUsput_.Controllers
 
         public BaseController(ILogger<BaseController<T, TSearch>> logger, IService<T, TSearch> service)
         {
-            
+
             _service = service;
             _logger = logger;
         }

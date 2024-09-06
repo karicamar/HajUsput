@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System.Net;
 using System.Runtime.InteropServices;
 
-namespace HajUsput_.Filters
+namespace HajUsput.Filters
 {
     public class ErrorFilter : ExceptionFilterAttribute
     {
