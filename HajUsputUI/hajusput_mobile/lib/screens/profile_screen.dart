@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hajusput_mobile/models/user.dart';
+import 'package:hajusput_mobile/screens/car_screen.dart';
 import 'package:hajusput_mobile/screens/change_password_screen.dart';
 import 'package:hajusput_mobile/screens/edit_details_screen.dart';
 import 'package:hajusput_mobile/screens/login_screen.dart';
@@ -49,6 +50,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               _buildUserInfoSection(),
               SizedBox(height: 20),
               _buildPreferencesSection(),
+              SizedBox(height: 20),
+              _buildCarSection(),
               SizedBox(height: 20),
               _buildOtherSections(),
             ],
@@ -148,6 +151,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => MyTravelPreferencesScreen()),
+                );
+              },
+              trailing: Icon(Icons.arrow_forward_ios),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCarSection() {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'My Car',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 16),
+            ListTile(
+              title: Text(
+                'Manage my car details',
+                style: TextStyle(
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        CarScreen(userId: UserSession.userId!),
+                  ),
                 );
               },
               trailing: Icon(Icons.arrow_forward_ios),

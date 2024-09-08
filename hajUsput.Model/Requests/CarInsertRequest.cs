@@ -9,7 +9,7 @@ namespace hajUsput.Model.Requests
 
 
 
-        // public int? DriverId { get; set; }
+        public int? DriverId { get; set; }
 
         public string Make { get; set; }
 

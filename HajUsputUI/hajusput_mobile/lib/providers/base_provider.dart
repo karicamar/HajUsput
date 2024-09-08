@@ -12,7 +12,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
   BaseProvider(String endpoint) {
     _endpoint = endpoint;
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "https://10.0.2.2:7089/");
+        defaultValue: "https://192.168.1.7:7089/");
   }
 
   String get baseUrl => _baseUrl!;
@@ -53,8 +53,8 @@ abstract class BaseProvider<T> with ChangeNotifier {
     var headers = createHeaders();
     var response = await http.get(uri, headers: headers);
 
-    print("Request URL: $url");
-    print("Request Headers: $headers");
+    // print("Request URL: $url");
+    // print("Request Headers: $headers");
     if (isValidResponse(response)) {
       var data = jsonDecode(response.body);
       if (data == null) {
@@ -150,7 +150,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
     String username = UserSession.username ?? "";
     String password = UserSession.password ?? "";
 
-    print("passed creds: $username, $password");
+    //print("passed creds: $username, $password");
 
     String basicAuth =
         "Basic ${base64Encode(utf8.encode('$username:$password'))}";

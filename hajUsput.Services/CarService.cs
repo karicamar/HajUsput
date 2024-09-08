@@ -20,6 +20,15 @@ namespace hajUsput.Services
         {
 
         }
-        
+        public Model.Car GetCarsByUserId(int userId)
+        {
+            var car = _context.Cars
+        .FirstOrDefault(c => c.DriverId == userId);
+
+            if (car == null)
+                throw new Exception("Car not found");
+
+            return _mapper.Map<Model.Car>(car);
+        }
     }
 }

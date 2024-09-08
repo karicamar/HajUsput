@@ -76,7 +76,7 @@ namespace hajUsput.Services
         public List<Model.Booking> GetUserBookings(int userId)
         {
             var bookings = _context.Bookings
-        .Include(b => b.Ride) // Ensure Ride is loaded
+        .Include(b => b.Ride) 
         .Where(b => b.PassengerId == userId || (b.Ride != null && b.Ride.DriverId == userId))
         .ToList();
 

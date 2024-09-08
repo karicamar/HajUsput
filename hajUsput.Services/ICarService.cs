@@ -11,9 +11,11 @@ namespace hajUsput.Services
     public interface ICarService :  ICRUDService<Car, CarSearchObject, CarInsertRequest, CarUpdateRequest>
 
     {
-        // Model.User Login(string username, string password);
-       
-       
+
+
+        public Car GetCarsByUserId(int userId);
+
+
 
 
     }

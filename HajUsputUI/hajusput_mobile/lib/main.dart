@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hajusput_mobile/providers/booking_provider.dart';
+import 'package:hajusput_mobile/providers/car_provider.dart';
 import 'package:hajusput_mobile/providers/gender_provider.dart';
 import 'package:hajusput_mobile/providers/location_provider.dart';
 import 'package:hajusput_mobile/providers/message_provider.dart';
@@ -34,6 +35,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => ReviewProvider()),
       ChangeNotifierProvider(create: (_) => BookingProvider()),
       ChangeNotifierProvider(create: (_) => PaymentProvider()),
+      ChangeNotifierProvider(create: (_) => CarProvider()),
     ],
     child: MyApp(),
   ));
