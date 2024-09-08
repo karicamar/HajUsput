@@ -4,12 +4,16 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>HajUsput_</RootNamespace>
+    <RootNamespace>HajUsput</RootNamespace>
     <UserSecretsId>c396f3ef-2947-473f-938d-ff2972a592f6</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
-
+	<ItemGroup>
+		<None Update="aspnetcore-dev.pfx">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="7.0.1" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
@@ -32,7 +36,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\hajUsput.Model\hajUsput.Model.csproj" />
-    <ProjectReference Include="..\hajUsput.services\hajUsput.Services.csproj" />
+    <ProjectReference Include="..\hajUsput.Services\hajUsput.Services.csproj" />
   </ItemGroup>
 
 </Project>

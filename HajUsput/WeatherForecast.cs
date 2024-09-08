@@ -1,4 +1,4 @@
-namespace HajUsput_
+namespace HajUsput
 {
     public class WeatherForecast
     {

@@ -9,17 +9,17 @@ using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using User = hajUsput.Model.User;
 
-namespace HajUsput_.Controllers
+namespace HajUsput.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Authorize(Roles = "User,Admin")]
 
-    public class UserController : BaseCRUDController<User, hajUsput.Model.SearchObjects.UserSearchObject, hajUsput.Model.Requests.UserInsertRequest, hajUsput.Model.Requests.UserUpdateRequest>
+    public class UserController : BaseCRUDController<User, UserSearchObject, UserInsertRequest, UserUpdateRequest>
 
     {
         private readonly IUserService _userService;
-        public UserController(ILogger<BaseController<User, hajUsput.Model.SearchObjects.UserSearchObject>> logger, IUserService service) : base(logger,service)
+        public UserController(ILogger<BaseController<User, UserSearchObject>> logger, IUserService service) : base(logger, service)
         {
             _userService = service;
 
@@ -43,7 +43,7 @@ namespace HajUsput_.Controllers
             var user = await _userService.Login(request.Username, request.Password);
             if (user == null) return Unauthorized();
 
-            return Ok(new { UserId = user.UserId /* other user details */ });
+            return Ok(new { user.UserId /* other user details */ });
         }
 
 

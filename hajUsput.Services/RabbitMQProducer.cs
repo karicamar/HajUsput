@@ -14,7 +14,12 @@ namespace hajUsput.Services
 
         public RabbitMQProducer()
         {
-            var factory = new ConnectionFactory() { HostName = "localhost", Port = 5672 };
+            var factory = new ConnectionFactory() {
+                HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "rabbitMQ",
+                Port = int.Parse(Environment.GetEnvironmentVariable("RABBITMQ_PORT") ?? "5672"),
+                UserName = Environment.GetEnvironmentVariable("RABBITMQ_USERNAME") ?? "guest",
+                Password = Environment.GetEnvironmentVariable("RABBITMQ_PASSWORD") ?? "guest",
+            };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.QueueDeclare(queue: "emailQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HajUsput_.Controllers
+namespace HajUsput.Controllers
 {
     [Route("[controller]")]
     public class BaseCRUDController<T, TSearch, TInsert, TUpdate> : BaseController<T, TSearch> where T : class where TSearch : class
@@ -14,8 +14,8 @@ namespace HajUsput_.Controllers
         public BaseCRUDController(ILogger<BaseController<T, TSearch>> logger, ICRUDService<T, TSearch, TInsert, TUpdate> service)
             : base(logger, service)
         {
-           _logger = logger;
-           _service = service;
+            _logger = logger;
+            _service = service;
         }
 
         [HttpPost]

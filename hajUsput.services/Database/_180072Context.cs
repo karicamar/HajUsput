@@ -44,6 +44,10 @@ public partial class _180072Context : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
+        // Log or inspect modelBuilder here to ensure it's being configured
+        Console.WriteLine("OnModelCreating has been called.");
         modelBuilder.Entity<Booking>(entity =>
         {
             entity.HasKey(e => e.BookingId).HasName("PK__Bookings__73951AED68E99F23");
@@ -286,7 +290,7 @@ public partial class _180072Context : DbContext
         );
 
         modelBuilder.Entity<ReviewRating>().HasData(
-            new ReviewRating { ReviewId = 1, Comments = "Great ride!", ReviewDate = DateTime.Now, ReviewerId = 2, DriverId = 4, Rating=5 }
+            new ReviewRating { ReviewId = 1, Comments = "Great ride!", ReviewDate = DateTime.Now, ReviewerId = 2, DriverId = 1, Rating=5 }
         );
 
         modelBuilder.Entity<MessageNotification>().HasData(

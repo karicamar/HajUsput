@@ -31,8 +31,4 @@
     <ProjectReference Include="..\hajUsput.Model\hajUsput.Model.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

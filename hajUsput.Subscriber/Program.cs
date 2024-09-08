@@ -12,7 +12,12 @@ class Program
         Console.WriteLine("Starting RabbitMQ Subscriber...");
 
         
-        var factory = new ConnectionFactory() { HostName = "localhost", Port = 5672 };
+        var factory = new ConnectionFactory() {
+            HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "rabbitMQ",
+            Port = int.Parse(Environment.GetEnvironmentVariable("RABBITMQ_PORT") ?? "5672"),
+            UserName = Environment.GetEnvironmentVariable("RABBITMQ_USERNAME") ?? "guest",
+            Password = Environment.GetEnvironmentVariable("RABBITMQ_PASSWORD") ?? "guest",
+        };
         using var connection = factory.CreateConnection();
         using var channel = connection.CreateModel();
 
@@ -57,16 +62,22 @@ class Program
     {
         try
         {
-            var smtpClient = new SmtpClient("smtp.gmail.com")
+            string smtpServer = Environment.GetEnvironmentVariable("SMTP_SERVER") ?? "smtp.gmail.com";
+            int smtpPort = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT") ?? "587");
+            string email = Environment.GetEnvironmentVariable("SMTP_EMAIL") ?? "haj.usput@gmail.com";
+            string password = Environment.GetEnvironmentVariable("SMTP_PASSWORD") ?? "grwc uivn hgtn azyx";
+
+            var smtpClient = new SmtpClient()
             {
-                Port = 587,
-                Credentials = new NetworkCredential("haj.usput@gmail.com", "grwc uivn hgtn azyx"),
-                EnableSsl = true,
+                Host = smtpServer,
+                Port = smtpPort,
+                Credentials = new NetworkCredential(email, password),
+                EnableSsl = true
             };
 
             var mailMessage = new MailMessage
             {
-                From = new MailAddress("haj.usput@gmail.com"),
+                From = new MailAddress(email),
                 Subject = subject,
                 Body = body,
                 IsBodyHtml = false,

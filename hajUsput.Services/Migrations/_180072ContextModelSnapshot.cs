@@ -62,7 +62,7 @@ namespace hajUsput.Services.Migrations
                         new
                         {
                             BookingId = 1,
-                            BookingDate = new DateTime(2024, 8, 19, 15, 2, 8, 484, DateTimeKind.Local).AddTicks(5643),
+                            BookingDate = new DateTime(2024, 9, 5, 1, 59, 0, 759, DateTimeKind.Local).AddTicks(4596),
                             BookingStatus = "Confirmed",
                             PassengerId = 2,
                             RideId = 1
@@ -229,7 +229,7 @@ namespace hajUsput.Services.Migrations
                         {
                             MessageId = 1,
                             MessageContent = "Your ride is scheduled.",
-                            MessageDate = new DateTime(2024, 8, 19, 15, 2, 8, 484, DateTimeKind.Local).AddTicks(5729),
+                            MessageDate = new DateTime(2024, 9, 5, 1, 59, 0, 759, DateTimeKind.Local).AddTicks(4762),
                             ReceiverId = 2,
                             SenderId = 1
                         });
@@ -278,7 +278,7 @@ namespace hajUsput.Services.Migrations
                             PaymentId = 1,
                             Amount = 20.00m,
                             PayerId = 2,
-                            PaymentDate = new DateTime(2024, 8, 19, 15, 2, 8, 484, DateTimeKind.Local).AddTicks(5677),
+                            PaymentDate = new DateTime(2024, 9, 5, 1, 59, 0, 759, DateTimeKind.Local).AddTicks(4697),
                             PaymentStatus = "Completed",
                             RideId = 1
                         });
@@ -309,9 +309,7 @@ namespace hajUsput.Services.Migrations
 
                     b.HasKey("PreferenceId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Preferences");
                 });
@@ -358,8 +356,9 @@ namespace hajUsput.Services.Migrations
                         {
                             ReviewId = 1,
                             Comments = "Great ride!",
-                            DriverId = 4,
-                            ReviewDate = new DateTime(2024, 8, 19, 15, 2, 8, 484, DateTimeKind.Local).AddTicks(5702),
+                            DriverId = 1,
+                            Rating = 5,
+                            ReviewDate = new DateTime(2024, 9, 5, 1, 59, 0, 759, DateTimeKind.Local).AddTicks(4733),
                             ReviewerId = 2
                         });
                 });
@@ -416,7 +415,7 @@ namespace hajUsput.Services.Migrations
                         new
                         {
                             RideId = 1,
-                            DepartureDate = new DateTime(2024, 8, 19, 15, 2, 8, 484, DateTimeKind.Local).AddTicks(5616),
+                            DepartureDate = new DateTime(2024, 9, 5, 1, 59, 0, 759, DateTimeKind.Local).AddTicks(4565),
                             DepartureLocationId = 1,
                             DestinationLocationId = 2,
                             Distance = 0.0,
@@ -535,7 +534,7 @@ namespace hajUsput.Services.Migrations
                             PasswordHash = "adminhash",
                             PasswordSalt = "adminsalt",
                             PhoneNumber = "1234567890",
-                            RegistrationDate = new DateTime(2024, 8, 19, 15, 2, 8, 484, DateTimeKind.Local).AddTicks(5462),
+                            RegistrationDate = new DateTime(2024, 9, 5, 1, 59, 0, 759, DateTimeKind.Local).AddTicks(4420),
                             Username = "admin"
                         },
                         new
@@ -549,7 +548,7 @@ namespace hajUsput.Services.Migrations
                             PasswordHash = "johnhash",
                             PasswordSalt = "johnsalt",
                             PhoneNumber = "0987654321",
-                            RegistrationDate = new DateTime(2024, 8, 19, 15, 2, 8, 484, DateTimeKind.Local).AddTicks(5518),
+                            RegistrationDate = new DateTime(2024, 9, 5, 1, 59, 0, 759, DateTimeKind.Local).AddTicks(4475),
                             Username = "johndoe"
                         });
                 });
@@ -662,8 +661,8 @@ namespace hajUsput.Services.Migrations
             modelBuilder.Entity("hajUsput.Services.Database.Preference", b =>
                 {
                     b.HasOne("hajUsput.Services.Database.User", "user")
-                        .WithOne("Preference")
-                        .HasForeignKey("hajUsput.Services.Database.Preference", "UserId");
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("user");
                 });
@@ -776,8 +775,6 @@ namespace hajUsput.Services.Migrations
                     b.Navigation("MessageNotificationSenders");
 
                     b.Navigation("Payments");
-
-                    b.Navigation("Preference");
 
                     b.Navigation("ReviewRatings");
 
