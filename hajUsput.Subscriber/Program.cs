@@ -13,15 +13,21 @@ class Program
 
         
         var factory = new ConnectionFactory() {
-            HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "rabbitMQ",
+            HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "hajusput-rabbitmq",
             Port = int.Parse(Environment.GetEnvironmentVariable("RABBITMQ_PORT") ?? "5672"),
             UserName = Environment.GetEnvironmentVariable("RABBITMQ_USERNAME") ?? "guest",
             Password = Environment.GetEnvironmentVariable("RABBITMQ_PASSWORD") ?? "guest",
+            RequestedConnectionTimeout = TimeSpan.FromSeconds(30),
+            RequestedHeartbeat = TimeSpan.FromSeconds(60),
+            AutomaticRecoveryEnabled = true,
+            NetworkRecoveryInterval = TimeSpan.FromSeconds(10),
         };
+        Console.WriteLine($"Connecting to RabbitMQ at {factory.HostName}:{factory.Port} with user {factory.UserName}");
+
         using var connection = factory.CreateConnection();
         using var channel = connection.CreateModel();
 
-        channel.QueueDeclare(queue: "emailQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+        channel.QueueDeclare(queue: "emailQueue", durable: true, exclusive: false, autoDelete: false, arguments: null);
 
         var consumer = new EventingBasicConsumer(channel);
         consumer.Received += (model, ea) =>
@@ -37,7 +43,11 @@ class Program
         channel.BasicConsume(queue: "emailQueue", autoAck: true, consumer: consumer);
 
         Console.WriteLine(" Press [enter] to exit.");
+
         Console.ReadLine();
+        Thread.Sleep(Timeout.Infinite);
+        channel.Close();
+        connection.Close();
     }
 
     static void ProcessMessage(string message)
