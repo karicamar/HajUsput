@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=YourStrongPassw0rd
+      - SA_PASSWORD=${SQL_SA_PASSWORD}
       - MSSQL_PID=Developer
     ports:
       - 1433:1433
@@ -19,8 +19,8 @@ services:
     container_name: hajusput-rabbitmq
     restart: unless-stopped
     environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
     ports:
       - 5672:5672
       - 15672:15672
@@ -34,14 +34,14 @@ services:
     build:
       context: ./hajUsput.Subscriber
     environment:
-      - RABBITMQ_HOST=hajusput-rabbitmq
-      - RABBITMQ_PORT=5672
-      - RABBITMQ_USERNAME=guest
-      - RABBITMQ_PASSWORD=guest
-      - SMTP_SERVER=smtp.gmail.com
-      - SMTP_PORT=587
-      - SMTP_EMAIL=haj.usput@gmail.com
-      - SMTP_PASSWORD="grwc uivn hgtn azyx"
+      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_PORT=${RABBITMQ_PORT}
+      - RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_PASSWORD=${RABBITMQ_DEFAULT_PASS}
+      - SMTP_SERVER=${SMTP_SERVER}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_EMAIL=${SMTP_EMAIL}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
     depends_on:
       - hajusput-sql
       - hajusput-api
@@ -54,15 +54,15 @@ services:
     build:
       context: .
     environment:
-      - ConnectionStrings:DefaultConnection=Server=hajusput-sql,1433;Database=180072;User=sa;Password=YourStrongPassw0rd;ConnectRetryCount=0; TrustServerCertificate=True
-      - ASPNETCORE_ENVIRONMENT=Development
-      - RABBITMQ_HOST=hajusput-rabbitmq
-      - RABBITMQ_PORT=5672
-      - RABBITMQ_USERNAME=guest
-      - RABBITMQ_PASSWORD=guest
+      - ConnectionStrings:DefaultConnection=Server=${SQL_HOST},1433;Database=${SQL_DATABASE};User=sa;Password=${SQL_SA_PASSWORD};ConnectRetryCount=0; TrustServerCertificate=True
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_PORT=${RABBITMQ_PORT}
+      - RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_PASSWORD=${RABBITMQ_DEFAULT_PASS}
       - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=aspnetcore-dev.pfx
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=yourpassword
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=${ASPNETCORE_CERT_PATH}
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${ASPNETCORE_CERT_PASSWORD}
     ports:
       - 7089:7089
     networks:
@@ -75,4 +75,4 @@ services:
 
 networks:
   hajusput:
-    driver: bridge 
+    driver: bridge
