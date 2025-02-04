@@ -13,7 +13,7 @@ Run the backend API
 ```
 docker-compose up --build
 ```
-## Desktop App for the Admin
+### Desktop App for the Admin
 Located at ```/HajUsputUI/hajusput_desktop```
 
 To run
@@ -23,13 +23,13 @@ flutter pub get
 ```
 flutter run -d windows
 ```
-### Credentials
+**Credentials**
 
 Username: ```desktop```
 
 Password: ```test```
 
-## Mobile App for the User
+### Mobile App for the User
 Located at ```/HajUsputUI/hajusput_mobile```
 
 To run
@@ -42,7 +42,7 @@ flutter run --dart-define=STRIPE_PUBLISHABLE_KEY=YourStripePublishableKey
 ```
 flutter run --dart-define=API_HOST=xxx.xxx.xxx.xxx
 ```
-### Credentials
+**Credentials**
 
 Username: ```mobile```
 
