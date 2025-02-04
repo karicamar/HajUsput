@@ -76,3 +76,7 @@ Some of the technologies and packages used:
 - **Docker**: for containerization of the API, SQL database, and RabbitMQ
 - **iTextSharp**: for generating PDF reports (financial, payment summaries, etc.)
 - **Stateless (NuGet Package)**: for implementing state machine logic
+
+# LICENSE
+Licensed under [MIT license](LICENSE)
+
