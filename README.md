@@ -40,7 +40,7 @@ flutter pub get
 flutter run --dart-define=STRIPE_PUBLISHABLE_KEY=YourStripePublishableKey
 ```
 ```
-flutter run --dart-define=API_HOST=xxx.xxx.xxx.xxx
+flutter run --dart-define=baseUrl=https://xxx.xxx.x.x:xxxx/
 ```
 **Credentials**
 
