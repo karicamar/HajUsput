@@ -12,5 +12,6 @@ RUN dotnet publish "HajUsput/HajUsput.csproj" -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
+COPY hajUsput.ML/MLModels/PricePredictionModel.zip /app/MLModels/PricePredictionModel.zip
 
 ENTRYPOINT ["dotnet","HajUsput.dll"]

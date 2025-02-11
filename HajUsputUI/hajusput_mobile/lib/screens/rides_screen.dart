@@ -58,6 +58,7 @@ class _RidesScreenState extends State<RidesScreen> {
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
+      title: 'Rides',
       content: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -104,7 +105,6 @@ class _RidesScreenState extends State<RidesScreen> {
                       length: 2,
                       child: Column(
                         children: [
-                          SizedBox(height: 50), // Add spacing above the tabs
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: 16),
                             child: TabBar(

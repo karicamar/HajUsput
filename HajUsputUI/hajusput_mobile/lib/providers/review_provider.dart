@@ -67,4 +67,20 @@ class ReviewProvider extends BaseProvider<Review> {
     final ratings = await getRatingsByUser(userId);
     return ratings["ReceivedReviews"]!.length;
   }
+
+  Future<Review?> getReviewByUser(
+      int currentUserId, int otherUserId, int rideId) async {
+    final ratings = await getRatingsByUser(currentUserId);
+
+    final givenReviews = ratings["GivenReviews"]!;
+    for (var review in givenReviews) {
+      if ((review.driverId == otherUserId ||
+              review.reviewerId == otherUserId) &&
+          review.rideId == rideId) {
+        return review;
+      }
+    }
+
+    return null; // No review found
+  }
 }

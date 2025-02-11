@@ -7,10 +7,11 @@ part 'review.g.dart';
 
 @JsonSerializable()
 class Review {
-  Review(this.reviewId, this.driverId, this.reviewerId, this.rating,
-      this.comments, this.reviewDate);
+  Review(this.reviewId, this.rideId, this.driverId, this.reviewerId,
+      this.rating, this.comments, this.reviewDate);
 
   int? reviewId;
+  int? rideId;
   int? driverId;
   int? reviewerId;
   int? rating;

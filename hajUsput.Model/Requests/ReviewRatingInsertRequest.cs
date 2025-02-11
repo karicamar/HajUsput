@@ -6,6 +6,7 @@ namespace hajUsput.Model.Requests
 {
     public class ReviewRatingInsertRequest
     {
+        public int RideId { get; set; }
 
         public int DriverId { get; set; }
 

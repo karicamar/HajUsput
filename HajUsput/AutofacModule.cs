@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using User = hajUsput.Model.User;
 using System.Reflection;
+using Microsoft.ML;
 
 public class AutofacModule : Autofac.Module
 {
@@ -20,6 +21,9 @@ public class AutofacModule : Autofac.Module
             });
             return config.CreateMapper();
         }).As<IMapper>().InstancePerLifetimeScope();
+
+        builder.RegisterInstance(new MLContext()).As<MLContext>().SingleInstance();
+        builder.RegisterGeneric(typeof(Logger<>)).As(typeof(ILogger<>)).SingleInstance();
 
         //builder.Register(ctx => new MapperConfiguration(cfg =>
         //{

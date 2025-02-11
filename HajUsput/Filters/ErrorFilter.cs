@@ -29,5 +29,26 @@ namespace HajUsput.Filters
 
             context.Result = new JsonResult(new { errors = list });
         }
+        // ERROR FIX
+        //public override void OnException(ExceptionContext context)
+        //{
+        //    var exception = context.Exception;
+        //    var statusCode = exception is UserException ? HttpStatusCode.BadRequest : HttpStatusCode.InternalServerError;
+
+        //    var errorDetails = new
+        //    {
+        //        message = exception.Message,
+        //        type = exception.GetType().Name,
+        //        status = (int)statusCode,
+        //        path = context.HttpContext.Request.Path,
+        //        method = context.HttpContext.Request.Method,
+        //        timestamp = DateTime.UtcNow,
+        //        stackTrace = exception.StackTrace,
+        //        innerException = exception.InnerException?.Message
+        //    };
+
+        //    context.HttpContext.Response.StatusCode = (int)statusCode;
+        //    context.Result = new JsonResult(errorDetails);
+        //}
     }
 }

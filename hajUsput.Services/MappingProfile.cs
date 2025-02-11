@@ -15,10 +15,6 @@ namespace hajUsput.Services
             CreateMap<Model.Requests.UserInsertRequest, Database.User>();
             CreateMap<Model.Requests.UserUpdateRequest, Database.User>();
 
-            CreateMap<Database.UserRole, Model.UserRole>();
-
-            CreateMap<Database.Role, Model.Role>();
-
             CreateMap<Database.Car, Model.Car>();
             CreateMap<Model.Requests.CarInsertRequest, Database.Car>();
             CreateMap<Model.Requests.CarUpdateRequest, Database.Car>();
@@ -27,10 +23,22 @@ namespace hajUsput.Services
             CreateMap<Model.Requests.RideInsertRequest, Database.Ride>();
             CreateMap<Model.Requests.RideUpdateRequest, Database.Ride>();
 
-            CreateMap<Database.Gender, Model.Gender>();
             CreateMap<Database.Preference, Model.Preference>();
             CreateMap<Model.Requests.PreferenceUpsertRequest, Database.Preference>();
+            CreateMap<Model.Requests.PreferenceUpsertRequest, Database.Preference>();
 
+            CreateMap<Database.Gender, Model.Gender>();
+            CreateMap<Model.Requests.GenderUpsertRequest, Database.Gender>();
+
+            CreateMap<Database.Role, Model.Role>();
+            CreateMap<Model.Requests.RoleUpsertRequest, Database.Role>(); 
+
+            CreateMap<Database.UserRole, Model.UserRole>();
+            CreateMap<Model.Requests.UserRoleUpsertRequest, Database.UserRole>();
+
+
+            CreateMap<Database.CarMake, Model.CarMake>();
+            CreateMap<Model.Requests.CarMakeUpsertRequest, Database.CarMake>();
 
             CreateMap<Database.Booking, Model.Booking>();
             CreateMap<Model.Requests.BookingInsertRequest, Database.Booking>();

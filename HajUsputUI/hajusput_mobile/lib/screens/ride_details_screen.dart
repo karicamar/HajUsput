@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/booking.dart';
-import '../models/payment.dart';
+import '../models/payment.dart'; // Ensure this import
+import '../models/review.dart';
 import '../models/ride.dart';
 import '../providers/booking_provider.dart';
 import '../providers/location_provider.dart';
-import '../providers/payment_provider.dart';
+import '../providers/payment_provider.dart'; // Ensure this import
 import '../providers/user_provider.dart';
 import '../providers/review_provider.dart';
 import '../screens/edit_ride_screen.dart';
 import '../screens/message_details_screen.dart';
-import '../screens/payment_screen.dart';
-import '../screens/ratings_screen.dart';
-import '../screens/leave_rating_screen.dart'; // Import the new screen
+import '../screens/payment_screen.dart'; // Ensure this import
+import '../screens/leave_rating_screen.dart';
 import '../utils/user_session.dart';
 import '../utils/utils.dart';
 
@@ -30,65 +30,57 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
   double? driverRating;
   String? departureLocation;
   String? destinationLocation;
-  final BookingProvider _bookingProvider = BookingProvider();
-  bool _isLoading = false;
-  Booking? _currentBooking; // To store the current booking
+  Booking? _currentBooking;
+  Review? _existingReview;
+  bool _isLoading = false; // Added loading state
 
   @override
   void initState() {
     super.initState();
-
-    // Fetch driver details only if the driver is not the logged-in user
-    if (widget.ride.driverId != UserSession.userId) {
-      _fetchDriverDetailsAndRating(widget.ride.driverId);
-    }
-
-    _fetchLocationNames(
-      widget.ride.departureLocationId,
-      widget.ride.destinationLocationId,
-    );
-
-    _fetchCurrentBooking(); // Fetch the current booking details
+    _fetchRideDetails();
   }
 
-  Future<void> _fetchDriverDetailsAndRating(int? driverId) async {
-    if (driverId == null) return;
-
+  Future<void> _fetchRideDetails() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final reviewRatingProvider =
         Provider.of<ReviewProvider>(context, listen: false);
-
-    final driver = await userProvider.getById(driverId);
-    final rating = await reviewRatingProvider.getDriverRating(driverId);
-
-    setState(() {
-      driverName = '${driver.firstName} ${driver.lastName}';
-      driverRating = rating;
-    });
-  }
-
-  Future<void> _fetchLocationNames(
-      int departureLocationId, int destinationLocationId) async {
     final locationProvider =
         Provider.of<LocationProvider>(context, listen: false);
+    final bookingProvider =
+        Provider.of<BookingProvider>(context, listen: false);
 
-    final locationStart = await locationProvider.getById(departureLocationId);
-    final locationEnd = await locationProvider.getById(destinationLocationId);
+    if (widget.ride.driverId != UserSession.userId) {
+      final driver = await userProvider.getById(widget.ride.driverId!);
+      final rating =
+          await reviewRatingProvider.getDriverRating(widget.ride.driverId!);
+      setState(() {
+        driverName = '${driver.firstName} ${driver.lastName}';
+        driverRating = rating;
+      });
+    }
 
+    final locationStart =
+        await locationProvider.getById(widget.ride.departureLocationId);
+    final locationEnd =
+        await locationProvider.getById(widget.ride.destinationLocationId);
     setState(() {
       departureLocation = locationStart.city;
       destinationLocation = locationEnd.city;
     });
-  }
 
-  Future<void> _fetchCurrentBooking() async {
     try {
-      final booking = await _bookingProvider.getByRideId(widget.ride.rideId!);
+      final booking = await bookingProvider.getByRideId(widget.ride.rideId!);
       setState(() {
         _currentBooking = booking;
       });
-    } catch (error) {
-      // Handle errors, e.g., booking not found
+      final review = await reviewRatingProvider.getReviewByUser(
+          UserSession.userId!,
+          booking.passengerId ?? widget.ride.driverId!,
+          widget.ride.rideId!);
+      setState(() {
+        _existingReview = review;
+      });
+    } catch (_) {
       setState(() {
         _currentBooking = null;
       });
@@ -100,18 +92,21 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
       _isLoading = true;
     });
 
-    final bookedRide = Booking(
-      null,
-      widget.ride.rideId,
-      UserSession.userId,
-      "Pending",
-      DateTime.now(),
-      null,
-    );
-
     try {
-      final booking = await _bookingProvider.insert(bookedRide);
+      final bookingProvider =
+          Provider.of<BookingProvider>(context, listen: false);
+      final bookedRide = Booking(
+        null,
+        widget.ride.rideId,
+        UserSession.userId,
+        "Pending",
+        DateTime.now(),
+        null,
+      );
+      final booking = await bookingProvider.insert(bookedRide);
 
+      final paymentProvider =
+          Provider.of<PaymentProvider>(context, listen: false);
       final payment = Payment(
         null,
         widget.ride.rideId,
@@ -121,7 +116,6 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
         widget.ride.price!.toDouble(),
         "Not Set",
       );
-      final PaymentProvider paymentProvider = PaymentProvider();
       final createdPayment = await paymentProvider.insert(payment);
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -148,43 +142,33 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
     }
   }
 
-  void _navigateToLeaveRating() async {
+  void _navigateToLeaveRating() {
     final loggedInUserId = UserSession.userId;
     final isDriver = widget.ride.driverId == loggedInUserId;
 
     if (isDriver) {
-      // Fetch the booking to get the passenger details
-      final booking = await _bookingProvider.getByRideId(widget.ride.rideId!);
-      final passengerId = booking.passengerId;
-
-      if (passengerId != null) {
-        // Fetch passenger details (optional, if needed)
-        final userProvider = Provider.of<UserProvider>(context, listen: false);
-        final passenger = await userProvider.getById(passengerId);
-
+      if (_currentBooking?.passengerId != null) {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => LeaveRatingScreen(
-              userId: passengerId,
-              userName: passenger.firstName,
+              userId: _currentBooking!.passengerId!,
+              userName: 'Passenger',
+              existingReview: _existingReview,
+              rideId: widget.ride.rideId!,
             ),
           ),
         );
-      } else {
-        // Handle case where passengerId is not available
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Passenger details not available')),
-        );
       }
     } else {
-      // Not the driver, send the driver details
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => LeaveRatingScreen(
             userId: widget.ride.driverId!,
             userName: driverName?.split(' ')[0] ?? 'Driver',
+            existingReview: _existingReview,
+            rideId: widget.ride.rideId!,
           ),
         ),
       );
@@ -196,13 +180,13 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
     final loggedInUserId = UserSession.userId;
     final isDriver = widget.ride.driverId == loggedInUserId;
     final isArchived = widget.ride.rideStatus == 'Archived';
-    final isBookingConfirmed = _currentBooking?.bookingStatus == 'Confirmed';
+    final isCancelled = widget.ride.rideStatus == 'Cancelled';
+    final isBookingCompleted = _currentBooking?.bookingStatus == 'Completed';
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Ride Details'),
         centerTitle: true,
-        elevation: 0,
         backgroundColor: Colors.green.shade300,
       ),
       body: SingleChildScrollView(
@@ -211,45 +195,26 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              _buildInfoRow(Icons.location_on, 'Departure:', departureLocation),
+              _buildInfoRow(Icons.flag, 'Destination:', destinationLocation),
               _buildInfoRow(
-                Icons.location_on,
-                'Departure:',
-                departureLocation,
-              ),
-              _buildInfoRow(
-                Icons.flag,
-                'Destination:',
-                destinationLocation,
-              ),
-              _buildInfoRow(
-                Icons.date_range,
-                'Departure Date:',
-                formatDate(widget.ride.departureDate) +
-                    ', ' +
-                    formatTime(widget.ride.departureDate),
-              ),
-              _buildInfoRow(
-                Icons.euro,
-                'Price:',
-                '${widget.ride.price?.toStringAsFixed(2)}',
-              ),
-              _buildInfoRow(
-                Icons.event_seat,
-                'Seats Available:',
-                '${widget.ride.availableSeats}',
-              ),
+                  Icons.date_range,
+                  'Departure Date:',
+                  formatDate(widget.ride.departureDate) +
+                      ', ' +
+                      formatTime(widget.ride.departureDate)),
+              _buildInfoRow(Icons.euro, 'Price:',
+                  '${widget.ride.price?.toStringAsFixed(2)}'),
+              _buildInfoRow(Icons.event_seat, 'Seats Available:',
+                  '${widget.ride.availableSeats}'),
               SizedBox(height: 20),
-              // Conditional rendering based on ride status and booking status
-              if (isArchived && !isBookingConfirmed) ...[
-                // Only show ride details, no buttons
-              ] else if (isArchived) ...[
+              if (isArchived && isBookingCompleted)
                 _buildActionButton(
-                  context,
-                  'Leave a Rating',
-                  Icons.rate_review,
-                  _navigateToLeaveRating,
-                ),
-              ] else if (!isDriver) ...[
+                    context,
+                    _existingReview == null ? 'Leave a Rating' : 'Edit Rating',
+                    Icons.rate_review,
+                    _navigateToLeaveRating),
+              if (!isDriver && !isArchived) ...[
                 if (driverName != null)
                   _buildInfoRow(Icons.person, 'Driver:', driverName),
                 if (driverRating != null)
@@ -257,76 +222,42 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
                     children: [
                       Icon(Icons.star, color: Colors.green.shade600),
                       SizedBox(width: 10),
-                      Text(
-                        'Driver Rating:',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
+                      Text('Driver Rating:',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16)),
                       SizedBox(width: 10),
-                      Text(
-                        driverRating!.toStringAsFixed(1),
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.info_outline,
-                          color: Colors.green.shade600,
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RatingsScreen(
-                                userId: widget.ride.driverId!,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                      Text(driverRating!.toStringAsFixed(1),
+                          style: TextStyle(fontSize: 16)),
                     ],
                   ),
-                SizedBox(height: 20),
-                _buildActionButton(
-                  context,
-                  'Contact Driver',
-                  Icons.message,
-                  () {
-                    Navigator.push(
+                _buildActionButton(context, 'Contact Driver', Icons.message,
+                    () {
+                  Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => MessageDetailsScreen(
-                          userId: widget.ride.driverId!,
-                          name: driverName?.split(' ')[0] ?? 'Driver',
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                            userId: widget.ride.driverId!,
+                            name: driverName ?? 'Driver'),
+                      ));
+                }),
                 SizedBox(height: 10),
-                _buildActionButton(
-                  context,
-                  'Book Ride',
-                  Icons.event_available,
-                  () => _bookRide(context),
-                  isLoading: _isLoading,
-                ),
-              ] else if (isDriver) ...[
-                _buildActionButton(
-                  context,
-                  'Edit Ride',
-                  Icons.edit,
-                  () {
-                    Navigator.push(
+                if (_currentBooking == null)
+                  _buildActionButton(
+                    context,
+                    'Book Ride',
+                    Icons.event_available,
+                    () => _bookRide(context),
+                    isLoading: _isLoading,
+                  ),
+              ],
+              if (isDriver && !isArchived && !isCancelled)
+                _buildActionButton(context, 'Edit Ride', Icons.edit, () {
+                  Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => EditRideScreen(ride: widget.ride),
-                      ),
-                    );
-                  },
-                ),
-              ],
+                      ));
+                }),
             ],
           ),
         ),
@@ -341,17 +272,12 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
         children: [
           Icon(icon, color: Colors.green.shade600),
           SizedBox(width: 10),
-          Text(
-            label,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
+          Text(label,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           SizedBox(width: 10),
           Expanded(
-            child: Text(
-              value ?? 'Loading...',
-              style: TextStyle(fontSize: 16),
-            ),
-          ),
+              child:
+                  Text(value ?? 'Loading...', style: TextStyle(fontSize: 16))),
         ],
       ),
     );
@@ -376,15 +302,10 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
               ),
             )
           : Icon(icon),
-      label: Text(
-        label,
-        style: TextStyle(fontSize: 16),
-      ),
+      label: Text(label, style: TextStyle(fontSize: 16)),
       style: ElevatedButton.styleFrom(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         foregroundColor: Colors.white,
         backgroundColor: Colors.green.shade300,
       ),

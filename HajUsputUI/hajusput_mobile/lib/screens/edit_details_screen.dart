@@ -89,7 +89,7 @@ class _EditDetailsScreenState extends State<EditDetailsScreen> {
                   _buildFormTextField(
                     name: 'phoneNumber',
                     label: 'Phone Number',
-                    initialValue: widget.user.phoneNumber!,
+                    initialValue: widget.user.phoneNumber ?? '',
                   ),
                   SizedBox(height: 30),
                   Center(

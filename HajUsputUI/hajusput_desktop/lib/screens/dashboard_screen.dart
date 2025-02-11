@@ -41,7 +41,6 @@ class DashboardScreen extends StatelessWidget {
             title: 'Total Users',
             futureValue: userProvider.getTotalUsers(),
             icon: Icons.people,
-            backgroundColor: Colors.blueAccent,
           ),
         ),
         SizedBox(width: 16),
@@ -53,7 +52,6 @@ class DashboardScreen extends StatelessWidget {
                 .getTotalRevenue(filter: {'paymentStatus': 'completed'}),
             icon: Icons.attach_money,
             isCurrency: true,
-            backgroundColor: Colors.greenAccent,
           ),
         ),
         SizedBox(width: 16),
@@ -64,7 +62,6 @@ class DashboardScreen extends StatelessWidget {
             futureValue: rideProvider.getTotalDistanceTraveled(),
             icon: Icons.map,
             isDistance: true,
-            backgroundColor: Colors.purpleAccent,
           ),
         ),
         SizedBox(width: 16),
@@ -75,7 +72,6 @@ class DashboardScreen extends StatelessWidget {
             futureValue: rideProvider.getAverageDistanceTraveled(),
             icon: Icons.directions_run,
             isDistance: true,
-            backgroundColor: Colors.tealAccent,
           ),
         ),
       ],
@@ -85,6 +81,7 @@ class DashboardScreen extends StatelessWidget {
   Widget _buildDetailedSection(
       BuildContext context, RideProvider rideProvider) {
     return Card(
+      color: Colors.white70,
       elevation: 4,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -97,13 +94,30 @@ class DashboardScreen extends StatelessWidget {
                 title: 'Total Rides',
                 futureValue: rideProvider.getTotalRides(),
                 icon: Icons.directions_car,
-                backgroundColor: Colors.orangeAccent,
               ),
             ),
             SizedBox(width: 16),
+            // This Row wraps the pie chart and legend
             Expanded(
               flex: 3,
-              child: _buildRidePieChart(rideProvider),
+              child: Row(
+                children: [
+                  // Pie chart
+                  Flexible(
+                    child: _buildRidePieChart(rideProvider),
+                  ),
+                  // Legend
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildLegendItem(Colors.blue, 'Scheduled'),
+                      _buildLegendItem(Colors.red, 'Cancelled'),
+                      _buildLegendItem(Colors.green, 'Archived'),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -118,11 +132,10 @@ class DashboardScreen extends StatelessWidget {
     required IconData icon,
     bool isCurrency = false,
     bool isDistance = false,
-    required Color backgroundColor,
   }) {
     return Card(
       elevation: 6,
-      color: backgroundColor,
+      color: Colors.lightGreen,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -169,6 +182,27 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildLegendItem(Color color, String label) {
+    return Row(
+      children: [
+        Container(
+          width: 20,
+          height: 20,
+          color: color,
+        ),
+        SizedBox(width: 8),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Colors.black,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildRidePieChart(RideProvider rideProvider) {
     return FutureBuilder<Map<String, int>>(
       future: rideProvider.getRideAnalysis(),
@@ -182,29 +216,51 @@ class DashboardScreen extends StatelessWidget {
           final scheduled = data["Scheduled"] ?? 0;
           final cancelled = data["Cancelled"] ?? 0;
           final archived = data["Archived"] ?? 0;
+          final total = scheduled + cancelled + archived;
 
           return SizedBox(
             height: 300, // Adjust the height as needed
             child: PieChart(
               PieChartData(
+                sectionsSpace: 0, // Remove the space between sections
+                borderData: FlBorderData(show: false), // Remove borders
+                centerSpaceRadius: 50, // Make space for percentage display
                 sections: [
                   PieChartSectionData(
                     color: Colors.blue,
                     value: scheduled.toDouble(),
-                    title: 'Scheduled',
+                    title:
+                        '${(scheduled / total * 100).toStringAsFixed(1)}%', // Percentage
                     radius: 50,
+                    titleStyle: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                   PieChartSectionData(
                     color: Colors.red,
                     value: cancelled.toDouble(),
-                    title: 'Cancelled',
+                    title:
+                        '${(cancelled / total * 100).toStringAsFixed(1)}%', // Percentage
                     radius: 50,
+                    titleStyle: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                   PieChartSectionData(
                     color: Colors.green,
                     value: archived.toDouble(),
-                    title: 'Archived',
+                    title:
+                        '${(archived / total * 100).toStringAsFixed(1)}%', // Percentage
                     radius: 50,
+                    titleStyle: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),

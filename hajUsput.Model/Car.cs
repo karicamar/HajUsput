@@ -9,10 +9,10 @@ namespace hajUsput.Model
        
 
         public int CarId { get; set; }
-        public int? DriverId { get; set; }
-        public string Make { get; set; } 
 
-        public string CarType { get; set; } 
+        public int? DriverId { get; set; }
+
+        public int CarMakeId { get; set; }
 
         public string Color { get; set; } 
 
@@ -20,7 +20,8 @@ namespace hajUsput.Model
 
         public string LicensePlateNumber { get; set; }
 
-        //public virtual User? Driver { get; set; }
+        public virtual CarMake CarMake { get; set; }
+
     }
 
 }

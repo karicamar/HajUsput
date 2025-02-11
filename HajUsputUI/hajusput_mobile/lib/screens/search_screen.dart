@@ -67,6 +67,7 @@ class _SearchScreenState extends State<SearchScreen> {
         _goingToFocusNode.unfocus();
       },
       child: MasterScreen(
+        title: 'Search Rides',
         content: Stack(
           children: [
             Container(

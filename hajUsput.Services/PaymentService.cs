@@ -22,7 +22,7 @@ namespace hajUsput.Services
 
         public PaymentService(_180072Context context, IMapper mapper) : base(context, mapper)
         {
-            StripeConfiguration.ApiKey = "sk_test_51PnMQZ05eJZLh6UACcyih0WpfVnisn2t5A3zHjeMzRUa7rnBzyKwznBVWX19Vklk3Pgora0cgGQJtvRBT4arhwhV00B35NV0yS"; ;
+           // StripeConfiguration.ApiKey = "sk_test_51PnMQZ05eJZLh6UACcyih0WpfVnisn2t5A3zHjeMzRUa7rnBzyKwznBVWX19Vklk3Pgora0cgGQJtvRBT4arhwhV00B35NV0yS"; ;
         }
         public PaymentIntent CreatePaymentIntent(decimal amount, string currency = "bam")
         {

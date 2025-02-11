@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace hajUsput.Services
 {
-    public class GenderService : BaseService<Model.Gender, Database.Gender, BaseSearchObject>, IGenderService
+    public class GenderService : BaseCRUDService<Model.Gender, Database.Gender, BaseSearchObject, GenderUpsertRequest, GenderUpsertRequest>, IGenderService
     {
 
         public GenderService(_180072Context context, IMapper mapper) : base(context, mapper)

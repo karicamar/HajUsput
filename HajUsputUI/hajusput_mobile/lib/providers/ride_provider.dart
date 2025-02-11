@@ -64,4 +64,15 @@ class RideProvider extends BaseProvider<Ride> {
       throw Exception('Failed to send message');
     }
   }
+
+  Future<void> cancelRide(int rideId) async {
+    var uri = Uri.parse("${baseUrl}Ride/$rideId/cancel");
+    var headers = createHeaders();
+
+    final response = await http.put(uri, headers: headers);
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to cancel ride');
+    }
+  }
 }

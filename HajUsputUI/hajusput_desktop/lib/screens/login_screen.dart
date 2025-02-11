@@ -15,6 +15,10 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   String? _errorMessage;
 
+  // FocusNodes
+  final FocusNode _usernameFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+
   Future<void> _login() async {
     setState(() {
       _isLoading = true;
@@ -35,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } catch (error) {
       setState(() {
         _errorMessage = error.toString();
+        print("Logged in user ID: $_errorMessage");
       });
     } finally {
       setState(() {
@@ -45,7 +50,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget inputField(
       String hint, IconData iconData, TextEditingController controller,
-      {bool obscureText = false}) {
+      {bool obscureText = false,
+      FocusNode? focusNode,
+      VoidCallback? onSubmit}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
       child: SizedBox(
@@ -56,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(30),
           child: TextField(
+            focusNode: focusNode,
             textAlignVertical: TextAlignVertical.center,
             obscureText: obscureText,
             decoration: InputDecoration(
@@ -71,6 +79,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             ),
             controller: controller,
+            onSubmitted: (_) {
+              if (onSubmit != null) {
+                onSubmit();
+              }
+            },
           ),
         ),
       ),
@@ -142,9 +155,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 20),
                 inputField(
-                    'Username', Icons.person_outline, _usernameController),
+                    'Username', Icons.person_outline, _usernameController,
+                    focusNode: _usernameFocusNode, onSubmit: () {
+                  // Move to the password field when enter is pressed
+                  FocusScope.of(context).requestFocus(_passwordFocusNode);
+                }),
                 inputField('Password', Icons.lock_outline, _passwordController,
-                    obscureText: true),
+                    obscureText: true,
+                    focusNode: _passwordFocusNode,
+                    onSubmit: _login),
                 if (_isLoading) CircularProgressIndicator(),
                 if (_errorMessage != null)
                   Text(
@@ -165,6 +184,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     _usernameController.dispose();
     _passwordController.dispose();
+    _usernameFocusNode.dispose();
+    _passwordFocusNode.dispose();
     super.dispose();
   }
 }

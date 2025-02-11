@@ -11,9 +11,7 @@ namespace hajUsput.Model.Requests
 
         public int? DriverId { get; set; }
 
-        public string Make { get; set; }
-
-        public string CarType { get; set; }
+        public int? CarMakeId { get; set; }
 
         public string Color { get; set; }
 

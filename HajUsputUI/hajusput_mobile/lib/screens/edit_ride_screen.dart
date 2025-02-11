@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:hajusput_mobile/models/ride.dart';
 import 'package:hajusput_mobile/providers/location_provider.dart';
+import 'package:hajusput_mobile/providers/ride_provider.dart';
 import 'package:hajusput_mobile/screens/date_time_screen.dart';
+import 'package:hajusput_mobile/screens/rides_screen.dart';
 import 'package:hajusput_mobile/screens/seat_selection_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -16,9 +17,9 @@ class EditRideScreen extends StatefulWidget {
 }
 
 class _EditRideScreenState extends State<EditRideScreen> {
-  final _formKey = GlobalKey<FormBuilderState>();
   String? departureLocation;
   String? destinationLocation;
+
   @override
   void initState() {
     super.initState();
@@ -41,7 +42,6 @@ class _EditRideScreenState extends State<EditRideScreen> {
   }
 
   Future<void> _cancelRide() async {
-    // Implement ride cancellation logic here
     bool? confirmCancellation = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -61,8 +61,24 @@ class _EditRideScreenState extends State<EditRideScreen> {
     );
 
     if (confirmCancellation == true) {
-      // Perform cancellation and pop the screen
-      Navigator.pop(context, {'cancelled': true});
+      try {
+        final rideProvider = Provider.of<RideProvider>(context, listen: false);
+        await rideProvider.cancelRide(widget.ride.rideId!);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Ride cancelled successfully')),
+        );
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => RidesScreen()),
+          (route) => false,
+        );
+      } catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to cancel ride')),
+        );
+      }
     }
   }
 
@@ -71,21 +87,33 @@ class _EditRideScreenState extends State<EditRideScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Ride'),
+        centerTitle: true,
+        backgroundColor: Colors.green.shade300,
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: FormBuilder(
-          key: _formKey,
-          child: Column(
-            children: [
-              ListTile(
-                title:
-                    Text('Route: $departureLocation to $destinationLocation '),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Card(
+              elevation: 3,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              child: ListTile(
+                title: Text('Route: $departureLocation → $destinationLocation',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 subtitle: Text('Location changes are not allowed.'),
               ),
-              ListTile(
+            ),
+            SizedBox(height: 10),
+            Card(
+              elevation: 3,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              child: ListTile(
                 title: Text('Date: ${widget.ride.departureDate}'),
-                trailing: Icon(Icons.edit),
+                trailing: Icon(Icons.edit, color: Colors.blueAccent),
                 onTap: () async {
                   final result = await Navigator.push(
                     context,
@@ -100,12 +128,17 @@ class _EditRideScreenState extends State<EditRideScreen> {
                   }
                 },
               ),
-              ListTile(
+            ),
+            SizedBox(height: 10),
+            Card(
+              elevation: 3,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              child: ListTile(
                 title:
                     Text('Seats: ${widget.ride.availableSeats ?? 'Not Set'}'),
-                trailing: Icon(Icons.edit),
+                trailing: Icon(Icons.edit, color: Colors.blueAccent),
                 onTap: () async {
-                  // Navigate to SeatSelectionScreen for editing seats
                   final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -120,14 +153,23 @@ class _EditRideScreenState extends State<EditRideScreen> {
                   }
                 },
               ),
-              Spacer(),
-              ElevatedButton(
+            ),
+            SizedBox(height: 20),
+            SizedBox(
+              child: ElevatedButton(
                 onPressed: _cancelRide,
-                child: Text('Cancel Ride'),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                child: Text('Cancel Ride', style: TextStyle(fontSize: 16)),
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.redAccent,
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

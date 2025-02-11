@@ -38,6 +38,7 @@ class _PublishScreenState extends State<PublishScreen> {
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
+      title: 'Publish Ride',
       content: Stack(
         children: <Widget>[
           if (_showMap)

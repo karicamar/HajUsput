@@ -26,7 +26,7 @@ class RideProvider extends BaseProvider<Ride> {
     }
   }
 
-  Future<double> getTotalDistanceTraveled() async {
+  Future<String> getTotalDistanceTraveled() async {
     var url = "${baseUrl}Ride/total-distance";
     var uri = Uri.parse(url);
     var headers = createHeaders();
@@ -34,13 +34,16 @@ class RideProvider extends BaseProvider<Ride> {
     final response = await http.get(uri, headers: headers);
 
     if (isValidResponse(response)) {
-      return double.parse(response.body);
+      double distance = double.parse(response.body);
+      return distance.toStringAsFixed(2); // Format to 2 decimal places
+
+      //return double.parse(response.body);
     } else {
       throw Exception('Failed to load total distance');
     }
   }
 
-  Future<double> getAverageDistanceTraveled() async {
+  Future<String> getAverageDistanceTraveled() async {
     var url = "${baseUrl}Ride/average-distance";
     var uri = Uri.parse(url);
     var headers = createHeaders();
@@ -48,7 +51,10 @@ class RideProvider extends BaseProvider<Ride> {
     final response = await http.get(uri, headers: headers);
 
     if (isValidResponse(response)) {
-      return double.parse(response.body);
+      double distance = double.parse(response.body);
+      return distance.toStringAsFixed(2); // Format to 2 decimal places
+
+      //return double.parse(response.body);
     } else {
       throw Exception('Failed to load total distance');
     }

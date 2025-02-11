@@ -1,13 +1,17 @@
+
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using DotNetEnv;
 using hajUsput.Services.Database;
 using HajUsput;
 using HajUsput.Filters;
 using Hangfire;
+using Hangfire.Server;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Stripe;
 using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,21 +19,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 // Register services directly with Autofac here.
-// Don't call builder.Populate(), that happens in AutofacServiceProviderFactory.
 builder.Host.ConfigureContainer<ContainerBuilder>(
    builder => builder.RegisterModule(new AutofacModule()));
 
 
-
-
-// Add services to the container.
 
 builder.Services.AddControllers(x =>
 {
     x.Filters.Add<ErrorFilter>();
 
 });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -50,7 +49,6 @@ builder.Services.AddSwaggerGen(c =>
     } });
     
 });
-//builder.Services.AddAutoMapper(typeof(IUserService));
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<_180072Context>(options =>
@@ -70,9 +68,10 @@ builder.Services.AddHangfire(config => config
         SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
         QueuePollInterval = TimeSpan.Zero,
         UseRecommendedIsolationLevel = true,
-        DisableGlobalLocks = true
+        DisableGlobalLocks = true,
     }));
 
+Console.WriteLine("Hangfire schema preparation completed.");
 builder.Services.AddHangfireServer();
 
 builder.WebHost.ConfigureKestrel(options =>
@@ -99,25 +98,26 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Configure Hangfire Dashboard
-app.UseHangfireDashboard();
 
-using (var scope= app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
-    var dataContext= scope.ServiceProvider.GetRequiredService<_180072Context>();
-    dataContext.Database.Migrate();
-    
-    // Immediate update on application start
-    //var rideService = scope.ServiceProvider.GetRequiredService<IRideService>();
-    //rideService.ArchiveCompletedRides();
+    var dataContext = scope.ServiceProvider.GetRequiredService<_180072Context>();
+
+    if (!dataContext.Database.CanConnect())
+    {
+        dataContext.Database.Migrate();
+
+    }
 }
 
-// Schedule the daily job
-//RecurringJob.AddOrUpdate<IRideService>(
-//    "DailyRideArchiveCheck",
-//    service => service.ArchiveCompletedRides(),
-//    Cron.Daily
-//    );
-    
+// Configure Hangfire Dashboard
+app.UseHangfireDashboard("/hangfire", new DashboardOptions
+{
+    Authorization = new[] { new Hangfire.Dashboard.NoAuthorizationFilter() }
+});
+
+Env.Load("../.env");
+string stripeSecretKey = Environment.GetEnvironmentVariable("STRIPE_SECRET_KEY") ?? "";
+StripeConfiguration.ApiKey = stripeSecretKey;
 
 app.Run();

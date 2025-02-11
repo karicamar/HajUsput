@@ -27,6 +27,16 @@ namespace hajUsput.Services
 
             return location?.LocationId;
         }
-       
+        public override IQueryable<Database.Location> AddFilter(IQueryable<Database.Location> query, LocationSearchObject? search = null)
+        {
+            var filteredQuery = base.AddFilter(query, search);
+
+            if (!string.IsNullOrWhiteSpace(search?.City))
+            {
+                filteredQuery = filteredQuery.Where(x => x.City.Contains(search.City));
+            }
+
+            return filteredQuery;
+        }
     }
 }

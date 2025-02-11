@@ -31,6 +31,7 @@ class _InboxScreenState extends State<InboxScreen> {
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
+      title: 'Inbox',
       content: FutureBuilder<List<Messages>>(
         future: _messagesFuture,
         builder: (context, snapshot) {

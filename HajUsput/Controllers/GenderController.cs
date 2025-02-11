@@ -12,7 +12,7 @@ namespace HajUsput.Controllers
     [Route("[controller]")]
     [AllowAnonymous]
 
-    public class GenderController : BaseController<Gender, BaseSearchObject>
+    public class GenderController : BaseCRUDController<Gender, BaseSearchObject,GenderUpsertRequest, GenderUpsertRequest>
 
     {
         public GenderController(ILogger<BaseController<Gender, BaseSearchObject>> logger, IGenderService service) : base(logger, service)

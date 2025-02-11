@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:hajusput_desktop/models/gender.dart';
+import 'package:hajusput_desktop/models/role.dart';
 import 'package:hajusput_desktop/providers/gender_provider.dart';
-import 'package:hajusput_desktop/screens/user_details_screen.dart';
+import 'package:hajusput_desktop/providers/role_provider.dart';
+import 'package:hajusput_desktop/providers/user_role_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:hajusput_desktop/models/search_result.dart';
 import 'package:hajusput_desktop/models/user.dart';
@@ -45,8 +47,10 @@ class _UsersBodyState extends State<UsersBody> {
   Future<void> _asyncMethod() async {
     result = await _userProvider.get(filter: {
       'fts': _controller.text,
-      'isBlocked': _includeBlockedUsers ? null : false
+      'isBlocked': _includeBlockedUsers ? null : false,
+      'IsRoleIncluded': true
     });
+
     genderResult = await _genderProvider.get();
     if (mounted) {
       setState(() {});
@@ -156,9 +160,9 @@ class _UsersBodyState extends State<UsersBody> {
                           }
                         },
                         cells: [
-                          DataCell(Text(user.firstName)),
-                          DataCell(Text(user.lastName)),
-                          DataCell(Text(user.email)),
+                          DataCell(Text(user.firstName!)),
+                          DataCell(Text(user.lastName!)),
+                          DataCell(Text(user.email!)),
                           DataCell(Text(user.phoneNumber ?? "")),
                           DataCell(_buildActionsColumn(user)),
                         ],
@@ -176,40 +180,125 @@ class _UsersBodyState extends State<UsersBody> {
         IconButton(
           icon: Icon(Icons.info, color: Colors.blue),
           onPressed: () {
-            UserDetailsScreen(
-              user: user,
-            );
+            _showRoleDialog(user: user);
           },
         ),
         IconButton(
           icon: Icon(
             user.isBlocked == true ? Icons.lock_open : Icons.block,
-            color: user.isBlocked == true ? Colors.green : Colors.red,
+            color: user.isBlocked == true ? Colors.green[900] : Colors.red,
           ),
           onPressed: () {
-            _toggleBlockUser(user);
+            _confirmBlockUser(context, user);
           },
         ),
       ],
     );
   }
 
+  Future<void> _showRoleDialog({User? user}) async {
+    if (user == null) return;
+
+    final _formKey = GlobalKey<FormState>();
+    List<Role> _roles = [];
+    Role? _selectedRole;
+    UserRoleProvider userRoleProvider = UserRoleProvider();
+
+    try {
+      var roleProvider = RoleProvider();
+      var result = await roleProvider.get();
+      _roles = result.result;
+
+      print("User Role ID: ${user.userRoles.first.roleId}");
+      print("Available Roles: ${_roles.map((r) => r.roleId).toList()}");
+
+      _selectedRole = _roles.firstWhere(
+        (role) => role.roleId == user.userRoles.first.roleId,
+        orElse: () => _roles.first,
+      );
+    } catch (e) {
+      print("Error fetching roles: $e");
+      return;
+    }
+
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Change User Role"),
+          content: Form(
+            key: _formKey,
+            child: DropdownButtonFormField<Role>(
+              value: _selectedRole,
+              decoration: InputDecoration(labelText: "Select Role"),
+              items: _roles.map((role) {
+                return DropdownMenuItem<Role>(
+                  value: role,
+                  child: Text(role.roleName),
+                );
+              }).toList(),
+              onChanged: (value) {
+                _selectedRole = value;
+              },
+              validator: (value) =>
+                  value == null ? "Please select a role" : null,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (_formKey.currentState!.validate() &&
+                    _selectedRole != null) {
+                  try {
+                    int? userRoleId = user.userRoles.first.userRoleId;
+                    Map<String, dynamic> updateRequest = {
+                      "userId": user.userId,
+                      "roleId": _selectedRole!.roleId,
+                    };
+                    await userRoleProvider.update(userRoleId!, updateRequest);
+
+                    _asyncMethod(); // Refresh the user list
+                    Navigator.pop(context);
+                    print("User role updated successfully");
+                  } catch (e) {
+                    print("Error updating role: $e");
+                  }
+                }
+              },
+              child: Text("Save"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _confirmBlockUser(BuildContext context, User user) async {
+    final isBlocking = !user.isBlocked!; // Determine the action
+
     final result = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Block User'),
-          content: Text('Are you sure you want to block this user?'),
+          title: Text(isBlocking ? 'Block User' : 'Unblock User'),
+          content: Text(isBlocking
+              ? 'Are you sure you want to block this user?'
+              : 'Are you sure you want to unblock this user?'),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: Text('Cancel', style: TextStyle(color: Colors.black)),
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
             ),
             ElevatedButton(
-              child: Text('Block'),
+              child: Text(isBlocking ? 'Block' : 'Unblock',
+                  style:
+                      TextStyle(color: isBlocking ? Colors.red : Colors.green)),
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
@@ -329,7 +418,7 @@ class _UsersBodyState extends State<UsersBody> {
               },
             ),
             ElevatedButton(
-              child: Text('Cancel'),
+              child: Text('Cancel', style: TextStyle(color: Colors.black)),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -369,12 +458,5 @@ class _UsersBodyState extends State<UsersBody> {
         ),
       );
     }
-  }
-
-  String? _getGenderName(int? genderId) {
-    if (genderId == null) return "N/A";
-    return genderResult?.result
-        .firstWhere((gender) => gender.genderId == genderId)
-        .genderName;
   }
 }

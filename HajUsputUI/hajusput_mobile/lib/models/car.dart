@@ -1,3 +1,4 @@
+import 'package:hajusput_mobile/models/carMake.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 /// This allows the `User` class to access private members in
@@ -7,16 +8,17 @@ part 'car.g.dart';
 
 @JsonSerializable()
 class Car {
-  Car(this.carId, this.driverId, this.make, this.carType, this.color,
-      this.yearOfManufacture, this.licensePlateNumber);
+  Car(this.carId, this.driverId, this.carMakeId, this.color,
+      this.yearOfManufacture, this.licensePlateNumber, this.carMake);
 
   int? carId;
   int? driverId;
-  String make;
-  String carType;
+  int carMakeId;
   String color;
   int? yearOfManufacture;
   String? licensePlateNumber;
+
+  final CarMake? carMake;
 
   /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$UserFromJson()` constructor.

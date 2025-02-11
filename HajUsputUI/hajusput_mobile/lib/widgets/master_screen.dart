@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 class MasterScreen extends StatefulWidget {
   final Widget content;
   final int currentIndex;
+  final String title;
 
-  MasterScreen({required this.content, required this.currentIndex});
+  MasterScreen(
+      {required this.content, required this.title, required this.currentIndex});
 
   @override
   _MasterScreenState createState() => _MasterScreenState();
@@ -14,6 +16,10 @@ class _MasterScreenState extends State<MasterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+        backgroundColor: Colors.green.shade300,
+      ),
       body: widget.content,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: widget.currentIndex,

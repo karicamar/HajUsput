@@ -53,8 +53,8 @@ abstract class BaseProvider<T> with ChangeNotifier {
     var headers = createHeaders();
     var response = await http.get(uri, headers: headers);
 
-    print("Request URL: $url");
-    print("Request Headers: $headers");
+    // print("Request URL: $url");
+    //print("Request Headers: $headers");
     if (isValidResponse(response)) {
       var data = jsonDecode(response.body);
       if (data == null) {
@@ -74,17 +74,17 @@ abstract class BaseProvider<T> with ChangeNotifier {
     var jsonRequest = jsonEncode(request);
 
     var response = await http.post(uri, headers: headers, body: jsonRequest);
-    print("Request URL: $url");
-    print("Request Headers: $headers");
-    print("Request Body: $jsonRequest");
+    // print("Request URL: $url");
+    //print("Request Headers: $headers");
+    //print("Request Body: $jsonRequest");
     if (isValidResponse(response)) {
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      //print('Response status: ${response.statusCode}');
+      // print('Response body: ${response.body}');
       var data = jsonDecode(response.body);
       return fromJson(data);
     } else {
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      // print('Response status: ${response.statusCode}');
+      // print('Response body: ${response.body}');
       throw new Exception("Unknown error");
     }
   }
@@ -97,9 +97,9 @@ abstract class BaseProvider<T> with ChangeNotifier {
     var jsonRequest = jsonEncode(request);
     var response = await http.put(uri, headers: headers, body: jsonRequest);
 
-    print("Request URL: $url");
-    print("Request Headers: $headers");
-    print("Request Body: $jsonRequest");
+    // print("Request URL: $url");
+    // print("Request Headers: $headers");
+    // print("Request Body: $jsonRequest");
     if (isValidResponse(response)) {
       var data = jsonDecode(response.body);
       if (data == null) {
@@ -119,14 +119,32 @@ abstract class BaseProvider<T> with ChangeNotifier {
     var jsonRequest = jsonEncode(request);
     var response = await http.put(uri, headers: headers, body: jsonRequest);
 
-    print("Request URL: $url");
-    print("Request Headers: $headers");
-    print("Request Body: $jsonRequest");
+    //  print("Request URL: $url");
+    //  print("Request Headers: $headers");
+    //  print("Request Body: $jsonRequest");
     if (isValidResponse(response)) {
       var data = jsonDecode(response.body);
       return fromJson(data);
     } else {
       throw new Exception("Unknown error");
+    }
+  }
+
+  Future<T> delete(int id) async {
+    var url = "$_baseUrl$_endpoint/$id";
+    var uri = Uri.parse(url);
+    var headers = createHeaders();
+
+    var response = await http.delete(uri, headers: headers);
+
+    //  print("Request URL: $url");
+    //  print("Request Headers: $headers");
+
+    if (isValidResponse(response)) {
+      var data = jsonDecode(response.body);
+      return fromJson(data);
+    } else {
+      throw Exception("Unknown error");
     }
   }
 
@@ -138,10 +156,10 @@ abstract class BaseProvider<T> with ChangeNotifier {
     if (response.statusCode < 299) {
       return true;
     } else if (response.statusCode == 401) {
-      print(response.body);
+      // print(response.body);
       throw new Exception("Unauthorized");
     } else {
-      print(response.body);
+      //  print(response.body);
       throw new Exception("Something bad happened please try again");
     }
   }
@@ -150,7 +168,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
     String username = UserSession.username ?? "";
     String password = UserSession.password ?? "";
 
-    print("passed creds: $username, $password");
+    // print("passed creds: $username, $password");
 
     String basicAuth =
         "Basic ${base64Encode(utf8.encode('$username:$password'))}";
@@ -183,7 +201,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
         }
         query += '$prefix$key=$encoded';
       } else if (value is DateTime) {
-        query += '$prefix$key=${(value as DateTime).toIso8601String()}';
+        query += '$prefix$key=${(value).toIso8601String()}';
       } else if (value is List || value is Map) {
         if (value is List) value = value.asMap();
         value.forEach((k, v) {

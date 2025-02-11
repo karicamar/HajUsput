@@ -30,5 +30,12 @@ namespace hajUsput.Services
 
             return _mapper.Map<Model.Car>(car);
         }
+        public override IQueryable<Database.Car> AddInclude(IQueryable<Database.Car> query, CarSearchObject? search = null)
+        {
+           
+                query = query.Include("CarMake");
+            
+            return base.AddInclude(query, search);
+        }
     }
 }

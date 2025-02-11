@@ -12,7 +12,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
   BaseProvider(String endpoint) {
     _endpoint = endpoint;
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "https://192.168.1.7:7089/");
+        defaultValue: "https://192.168.1.6:7089/");
   }
 
   String get baseUrl => _baseUrl!;
@@ -74,17 +74,17 @@ abstract class BaseProvider<T> with ChangeNotifier {
     var jsonRequest = jsonEncode(request);
 
     var response = await http.post(uri, headers: headers, body: jsonRequest);
-    print("Request URL: $url");
-    print("Request Headers: $headers");
-    print("Request Body: $jsonRequest");
+   // print("Request URL: $url");
+   // print("Request Headers: $headers");
+   // print("Request Body: $jsonRequest");
     if (isValidResponse(response)) {
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+    //  print('Response status: ${response.statusCode}');
+    //  print('Response body: ${response.body}');
       var data = jsonDecode(response.body);
       return fromJson(data);
     } else {
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+    //  print('Response status: ${response.statusCode}');
+    //  print('Response body: ${response.body}');
       throw new Exception("Unknown error");
     }
   }
@@ -97,9 +97,9 @@ abstract class BaseProvider<T> with ChangeNotifier {
     var jsonRequest = jsonEncode(request);
     var response = await http.put(uri, headers: headers, body: jsonRequest);
 
-    print("Request URL: $url");
-    print("Request Headers: $headers");
-    print("Request Body: $jsonRequest");
+   // print("Request URL: $url");
+   // print("Request Headers: $headers");
+   // print("Request Body: $jsonRequest");
     if (isValidResponse(response)) {
       var data = jsonDecode(response.body);
       if (data == null) {
@@ -119,9 +119,9 @@ abstract class BaseProvider<T> with ChangeNotifier {
     var jsonRequest = jsonEncode(request);
     var response = await http.put(uri, headers: headers, body: jsonRequest);
 
-    print("Request URL: $url");
-    print("Request Headers: $headers");
-    print("Request Body: $jsonRequest");
+   // print("Request URL: $url");
+   // print("Request Headers: $headers");
+   // print("Request Body: $jsonRequest");
     if (isValidResponse(response)) {
       var data = jsonDecode(response.body);
       return fromJson(data);
@@ -183,7 +183,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
         }
         query += '$prefix$key=$encoded';
       } else if (value is DateTime) {
-        query += '$prefix$key=${(value as DateTime).toIso8601String()}';
+        query += '$prefix$key=${(value).toIso8601String()}';
       } else if (value is List || value is Map) {
         if (value is List) value = value.asMap();
         value.forEach((k, v) {

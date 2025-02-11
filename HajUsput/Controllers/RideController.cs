@@ -27,12 +27,26 @@ namespace HajUsput.Controllers
             var predictedPrice = _rideService.PredictPrice(request);
             return Ok(new PredictionResponse { Price = predictedPrice });
         }
-        [HttpPost("update-status/{rideId}")]
-        public IActionResult UpdateRideStatus(int rideId, [FromBody] RideStateMachine.Trigger trigger)
+        //[HttpPost("update-status/{rideId}")]
+        //public IActionResult UpdateRideStatus(int rideId, [FromBody] RideStateMachine.Trigger trigger)
+        //{
+        //    _rideService.UpdateRideStatus(rideId, trigger);
+        //    return Ok();
+        //}
+        [HttpPut("{rideId}/cancel")]
+        public IActionResult CancelRide(int rideId)
         {
-            _rideService.UpdateRideStatus(rideId, trigger);
-            return Ok();
+            try
+            {
+                _rideService.UpdateRideStatus(rideId, RideStateMachine.Trigger.CancelRide);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Failed to cancel the ride: {ex.Message}");
+            }
         }
+
         [HttpPost("reduce-seats/{rideId}")]
         public IActionResult ReduceAvailableSeats(int rideId)
         {

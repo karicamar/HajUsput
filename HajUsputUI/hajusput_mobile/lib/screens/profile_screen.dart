@@ -42,6 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
+      title: 'Profile',
       content: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -71,15 +72,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
-              radius: 40,
-              backgroundImage: AssetImage(
-                  'assets/images/profile_placeholder.png'), // Replace with user profile image if available
-            ),
-            SizedBox(height: 16),
             Text(
-              user?.firstName ?? 'John Doe',
+              user?.firstName ?? 'First Name',
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -94,8 +90,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
+
+            // Edit Button
+            ListTile(
+              title: Text(
+                'Edit Details',
+                style: TextStyle(
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -103,15 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 );
               },
-              child: Text('Edit Details'),
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.green,
-              ),
+              trailing: Icon(Icons.arrow_forward_ios),
             ),
           ],
         ),

@@ -18,7 +18,7 @@ public partial class Payment
 
 
     public DateTime? PaymentDate { get; set; }
-
+    
     public virtual User? Payer { get; set; }
 
     public virtual Ride? Ride { get; set; }

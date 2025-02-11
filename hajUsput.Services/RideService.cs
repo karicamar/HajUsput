@@ -27,13 +27,15 @@ namespace hajUsput.Services
         private readonly MLContext _mlContext;
         private readonly ITransformer _model;
         private readonly object _lock = new object();
-        private readonly string _modelPath= "../hajUsput.ML/MLModels/PricePredictionModel.zip";
-       
+        private readonly string _modelPath = "/app/MLModels/PricePredictionModel.zip";
+
+
         public RideService(_180072Context context, IMapper mapper, ILogger<RideService> logger) : base(context, mapper)
         {
             _logger = logger;
             _mlContext = new MLContext();
-            
+
+
             _model = _mlContext.Model.Load(_modelPath, out _);
 
         }

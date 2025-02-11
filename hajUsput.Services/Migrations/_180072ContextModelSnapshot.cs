@@ -62,10 +62,74 @@ namespace hajUsput.Services.Migrations
                         new
                         {
                             BookingId = 1,
-                            BookingDate = new DateTime(2024, 9, 5, 1, 59, 0, 759, DateTimeKind.Local).AddTicks(4596),
-                            BookingStatus = "Confirmed",
+                            BookingDate = new DateTime(2025, 2, 2, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2232),
+                            BookingStatus = "Completed",
                             PassengerId = 2,
+                            PaymentId = 1,
                             RideId = 1
+                        },
+                        new
+                        {
+                            BookingId = 2,
+                            BookingDate = new DateTime(2025, 2, 7, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2238),
+                            BookingStatus = "Completed",
+                            PassengerId = 3,
+                            PaymentId = 2,
+                            RideId = 2
+                        },
+                        new
+                        {
+                            BookingId = 3,
+                            BookingDate = new DateTime(2025, 2, 11, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2242),
+                            BookingStatus = "Pending",
+                            PassengerId = 4,
+                            PaymentId = 3,
+                            RideId = 3
+                        },
+                        new
+                        {
+                            BookingId = 4,
+                            BookingDate = new DateTime(2025, 2, 5, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2246),
+                            BookingStatus = "Completed",
+                            PassengerId = 5,
+                            PaymentId = 4,
+                            RideId = 4
+                        },
+                        new
+                        {
+                            BookingId = 5,
+                            BookingDate = new DateTime(2025, 2, 9, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2250),
+                            BookingStatus = "Completed",
+                            PassengerId = 3,
+                            PaymentId = 5,
+                            RideId = 9
+                        },
+                        new
+                        {
+                            BookingId = 6,
+                            BookingDate = new DateTime(2025, 2, 4, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2257),
+                            BookingStatus = "Completed",
+                            PassengerId = 4,
+                            PaymentId = 6,
+                            RideId = 11
+                        },
+                        new
+                        {
+                            BookingId = 7,
+                            BookingDate = new DateTime(2025, 2, 5, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2261),
+                            BookingStatus = "Completed",
+                            PassengerId = 5,
+                            PaymentId = 7,
+                            RideId = 15
+                        },
+                        new
+                        {
+                            BookingId = 8,
+                            BookingDate = new DateTime(2025, 2, 11, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2265),
+                            BookingStatus = "Pending",
+                            PassengerId = 6,
+                            PaymentId = 8,
+                            RideId = 16
                         });
                 });
 
@@ -77,11 +141,8 @@ namespace hajUsput.Services.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarId"));
 
-                    b.Property<string>("CarType")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
+                    b.Property<int>("CarMakeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Color")
                         .IsRequired()
@@ -97,17 +158,13 @@ namespace hajUsput.Services.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<string>("Make")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
                     b.Property<int?>("YearOfManufacture")
                         .HasColumnType("int");
 
                     b.HasKey("CarId")
                         .HasName("PK__Cars__68A0342EA4CAD173");
+
+                    b.HasIndex("CarMakeId");
 
                     b.HasIndex("DriverId");
 
@@ -117,11 +174,133 @@ namespace hajUsput.Services.Migrations
                         new
                         {
                             CarId = 1,
-                            CarType = "Sedan",
+                            CarMakeId = 1,
                             Color = "Red",
                             DriverId = 1,
-                            LicensePlateNumber = "ABC123",
-                            Make = "Toyota"
+                            LicensePlateNumber = "ABC-123",
+                            YearOfManufacture = 2015
+                        },
+                        new
+                        {
+                            CarId = 2,
+                            CarMakeId = 2,
+                            Color = "Blue",
+                            DriverId = 2,
+                            LicensePlateNumber = "DEF-456",
+                            YearOfManufacture = 2018
+                        },
+                        new
+                        {
+                            CarId = 3,
+                            CarMakeId = 3,
+                            Color = "Black",
+                            DriverId = 3,
+                            LicensePlateNumber = "GHI-789",
+                            YearOfManufacture = 2020
+                        },
+                        new
+                        {
+                            CarId = 4,
+                            CarMakeId = 4,
+                            Color = "White",
+                            DriverId = 4,
+                            LicensePlateNumber = "JKL-012",
+                            YearOfManufacture = 2017
+                        },
+                        new
+                        {
+                            CarId = 5,
+                            CarMakeId = 5,
+                            Color = "Gray",
+                            DriverId = 5,
+                            LicensePlateNumber = "MNO-345",
+                            YearOfManufacture = 2016
+                        },
+                        new
+                        {
+                            CarId = 6,
+                            CarMakeId = 6,
+                            Color = "Silver",
+                            DriverId = 6,
+                            LicensePlateNumber = "PQR-678",
+                            YearOfManufacture = 2019
+                        },
+                        new
+                        {
+                            CarId = 7,
+                            CarMakeId = 7,
+                            Color = "Green",
+                            DriverId = 7,
+                            LicensePlateNumber = "STU-901",
+                            YearOfManufacture = 2021
+                        },
+                        new
+                        {
+                            CarId = 8,
+                            CarMakeId = 8,
+                            Color = "Yellow",
+                            DriverId = 8,
+                            LicensePlateNumber = "VWX-234",
+                            YearOfManufacture = 2014
+                        });
+                });
+
+            modelBuilder.Entity("hajUsput.Services.Database.CarMake", b =>
+                {
+                    b.Property<int>("CarMakeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CarMakeId"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CarMakeId");
+
+                    b.ToTable("CarMakes");
+
+                    b.HasData(
+                        new
+                        {
+                            CarMakeId = 1,
+                            Name = "Toyota"
+                        },
+                        new
+                        {
+                            CarMakeId = 2,
+                            Name = "Ford"
+                        },
+                        new
+                        {
+                            CarMakeId = 3,
+                            Name = "BMW"
+                        },
+                        new
+                        {
+                            CarMakeId = 4,
+                            Name = "Mercedes"
+                        },
+                        new
+                        {
+                            CarMakeId = 5,
+                            Name = "Hyundai"
+                        },
+                        new
+                        {
+                            CarMakeId = 6,
+                            Name = "Volkswagen"
+                        },
+                        new
+                        {
+                            CarMakeId = 7,
+                            Name = "Audi"
+                        },
+                        new
+                        {
+                            CarMakeId = 8,
+                            Name = "Chevrolet"
                         });
                 });
 
@@ -154,6 +333,11 @@ namespace hajUsput.Services.Migrations
                         {
                             GenderId = 2,
                             GenderName = "Female"
+                        },
+                        new
+                        {
+                            GenderId = 3,
+                            GenderName = "Other"
                         });
                 });
 
@@ -184,14 +368,50 @@ namespace hajUsput.Services.Migrations
                         new
                         {
                             LocationId = 1,
-                            City = "Frankfurt",
-                            Country = "Germany"
+                            City = "Sarajevo",
+                            Country = "Bosnia and Herzegovina"
                         },
                         new
                         {
                             LocationId = 2,
-                            City = "Tuzla",
-                            Country = "BiH"
+                            City = "Mostar",
+                            Country = "Bosnia and Herzegovina"
+                        },
+                        new
+                        {
+                            LocationId = 3,
+                            City = "Banja Luka",
+                            Country = "Bosnia and Herzegovina"
+                        },
+                        new
+                        {
+                            LocationId = 4,
+                            City = "Zagreb",
+                            Country = "Croatia"
+                        },
+                        new
+                        {
+                            LocationId = 5,
+                            City = "Belgrade",
+                            Country = "Serbia"
+                        },
+                        new
+                        {
+                            LocationId = 6,
+                            City = "Dubrovnik",
+                            Country = "Croatia"
+                        },
+                        new
+                        {
+                            LocationId = 7,
+                            City = "Podgorica",
+                            Country = "Montenegro"
+                        },
+                        new
+                        {
+                            LocationId = 8,
+                            City = "Ljubljana",
+                            Country = "Slovenia"
                         });
                 });
 
@@ -228,10 +448,130 @@ namespace hajUsput.Services.Migrations
                         new
                         {
                             MessageId = 1,
-                            MessageContent = "Your ride is scheduled.",
-                            MessageDate = new DateTime(2024, 9, 5, 1, 59, 0, 759, DateTimeKind.Local).AddTicks(4762),
+                            MessageContent = "Hi, are you available for a ride tomorrow?",
+                            MessageDate = new DateTime(2025, 2, 11, 10, 51, 17, 881, DateTimeKind.Local).AddTicks(2295),
                             ReceiverId = 2,
                             SenderId = 1
+                        },
+                        new
+                        {
+                            MessageId = 2,
+                            MessageContent = "Yes, I am. Let me know the time.",
+                            MessageDate = new DateTime(2025, 2, 11, 11, 21, 17, 881, DateTimeKind.Local).AddTicks(2301),
+                            ReceiverId = 1,
+                            SenderId = 2
+                        },
+                        new
+                        {
+                            MessageId = 3,
+                            MessageContent = "Can I bring a pet on this ride?",
+                            MessageDate = new DateTime(2025, 2, 11, 10, 51, 17, 881, DateTimeKind.Local).AddTicks(2305),
+                            ReceiverId = 4,
+                            SenderId = 3
+                        },
+                        new
+                        {
+                            MessageId = 4,
+                            MessageContent = "Yes, pets are allowed as long as they are well-behaved.",
+                            MessageDate = new DateTime(2025, 2, 11, 11, 51, 17, 881, DateTimeKind.Local).AddTicks(2309),
+                            ReceiverId = 3,
+                            SenderId = 4
+                        },
+                        new
+                        {
+                            MessageId = 5,
+                            MessageContent = "How many seats are available for this trip?",
+                            MessageDate = new DateTime(2025, 2, 10, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2313),
+                            ReceiverId = 6,
+                            SenderId = 5
+                        },
+                        new
+                        {
+                            MessageId = 6,
+                            MessageContent = "There are two seats available.",
+                            MessageDate = new DateTime(2025, 2, 9, 13, 51, 17, 881, DateTimeKind.Local).AddTicks(2317),
+                            ReceiverId = 5,
+                            SenderId = 6
+                        },
+                        new
+                        {
+                            MessageId = 7,
+                            MessageContent = "Is smoking allowed on this ride?",
+                            MessageDate = new DateTime(2025, 2, 9, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2321),
+                            ReceiverId = 8,
+                            SenderId = 7
+                        },
+                        new
+                        {
+                            MessageId = 8,
+                            MessageContent = "No, sorry, smoking is not allowed.",
+                            MessageDate = new DateTime(2025, 2, 8, 16, 51, 17, 881, DateTimeKind.Local).AddTicks(2325),
+                            ReceiverId = 7,
+                            SenderId = 8
+                        },
+                        new
+                        {
+                            MessageId = 9,
+                            MessageContent = "What time is the departure?",
+                            MessageDate = new DateTime(2025, 2, 11, 12, 6, 17, 881, DateTimeKind.Local).AddTicks(2330),
+                            ReceiverId = 3,
+                            SenderId = 1
+                        },
+                        new
+                        {
+                            MessageId = 10,
+                            MessageContent = "We’re leaving at 10:00 AM.",
+                            MessageDate = new DateTime(2025, 2, 11, 12, 21, 17, 881, DateTimeKind.Local).AddTicks(2334),
+                            ReceiverId = 1,
+                            SenderId = 3
+                        },
+                        new
+                        {
+                            MessageId = 11,
+                            MessageContent = "Will you stop for a break during the ride?",
+                            MessageDate = new DateTime(2025, 2, 11, 8, 51, 17, 881, DateTimeKind.Local).AddTicks(2338),
+                            ReceiverId = 6,
+                            SenderId = 2
+                        },
+                        new
+                        {
+                            MessageId = 12,
+                            MessageContent = "Yes, we’ll stop midway for a short break.",
+                            MessageDate = new DateTime(2025, 2, 11, 9, 51, 17, 881, DateTimeKind.Local).AddTicks(2342),
+                            ReceiverId = 2,
+                            SenderId = 6
+                        },
+                        new
+                        {
+                            MessageId = 13,
+                            MessageContent = "Can you confirm my booking?",
+                            MessageDate = new DateTime(2025, 2, 11, 6, 51, 17, 881, DateTimeKind.Local).AddTicks(2346),
+                            ReceiverId = 8,
+                            SenderId = 4
+                        },
+                        new
+                        {
+                            MessageId = 14,
+                            MessageContent = "Your booking has been confirmed.",
+                            MessageDate = new DateTime(2025, 2, 11, 7, 51, 17, 881, DateTimeKind.Local).AddTicks(2350),
+                            ReceiverId = 4,
+                            SenderId = 8
+                        },
+                        new
+                        {
+                            MessageId = 15,
+                            MessageContent = "Is it okay to bring a small bag?",
+                            MessageDate = new DateTime(2025, 2, 8, 10, 51, 17, 881, DateTimeKind.Local).AddTicks(2354),
+                            ReceiverId = 7,
+                            SenderId = 5
+                        },
+                        new
+                        {
+                            MessageId = 16,
+                            MessageContent = "Yes, no problem. See you soon!",
+                            MessageDate = new DateTime(2025, 2, 8, 11, 51, 17, 881, DateTimeKind.Local).AddTicks(2358),
+                            ReceiverId = 5,
+                            SenderId = 7
                         });
                 });
 
@@ -276,11 +616,82 @@ namespace hajUsput.Services.Migrations
                         new
                         {
                             PaymentId = 1,
-                            Amount = 20.00m,
+                            Amount = 25.00m,
                             PayerId = 2,
-                            PaymentDate = new DateTime(2024, 9, 5, 1, 59, 0, 759, DateTimeKind.Local).AddTicks(4697),
+                            PaymentDate = new DateTime(2025, 2, 2, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2166),
+                            PaymentMethod = "Stripe",
                             PaymentStatus = "Completed",
                             RideId = 1
+                        },
+                        new
+                        {
+                            PaymentId = 2,
+                            Amount = 30.00m,
+                            PayerId = 3,
+                            PaymentDate = new DateTime(2025, 2, 7, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2173),
+                            PaymentMethod = "Stripe",
+                            PaymentStatus = "Completed",
+                            RideId = 2
+                        },
+                        new
+                        {
+                            PaymentId = 3,
+                            Amount = 50.00m,
+                            PayerId = 4,
+                            PaymentDate = new DateTime(2025, 2, 11, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2178),
+                            PaymentMethod = "Cash",
+                            PaymentStatus = "Pending",
+                            RideId = 3
+                        },
+                        new
+                        {
+                            PaymentId = 4,
+                            Amount = 20.00m,
+                            PayerId = 5,
+                            PaymentDate = new DateTime(2025, 2, 5, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2182),
+                            PaymentMethod = "Stripe",
+                            PaymentStatus = "Completed",
+                            RideId = 4
+                        },
+                        new
+                        {
+                            PaymentId = 5,
+                            Amount = 35.00m,
+                            PayerId = 3,
+                            PaymentDate = new DateTime(2025, 2, 9, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2186),
+                            PaymentMethod = "Stripe",
+                            PaymentStatus = "Completed",
+                            RideId = 9
+                        },
+                        new
+                        {
+                            PaymentId = 6,
+                            Amount = 45.00m,
+                            PayerId = 4,
+                            PaymentDate = new DateTime(2025, 2, 4, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2191),
+                            PaymentMethod = "Stripe",
+                            PaymentStatus = "Completed",
+                            RideId = 11
+                        },
+                        new
+                        {
+                            PaymentId = 7,
+                            Amount = 40.00m,
+                            PayerId = 5,
+                            PaymentDate = new DateTime(2025, 2, 5, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2195),
+                            PaymentMethod = "Stripe",
+                            PaymentStatus = "Completed",
+                            RideId = 15
+                        },
+                        new
+                        {
+                            PaymentId = 8,
+                            Amount = 60.00m,
+                            PayerId = 6,
+                            PaymentDate = new DateTime(2025, 2, 11, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2200),
+                            PaymentMethod = "Cash",
+                            PaymentStatus = "Pending",
+                            RideId = 16
                         });
                 });
 
@@ -312,6 +723,80 @@ namespace hajUsput.Services.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Preferences");
+
+                    b.HasData(
+                        new
+                        {
+                            PreferenceId = 1,
+                            AllowsMusic = "Prefer music!",
+                            AllowsPets = "I love pets.",
+                            AllowsSmoking = "No smoking!",
+                            IsChatty = "I'm chatty!",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            PreferenceId = 2,
+                            AllowsMusic = "Prefer music!",
+                            AllowsPets = "No pets allowed",
+                            AllowsSmoking = "No smoking!",
+                            IsChatty = "I'm the quiet type",
+                            UserId = 2
+                        },
+                        new
+                        {
+                            PreferenceId = 3,
+                            AllowsMusic = "Prefer silence",
+                            AllowsPets = "I love pets.",
+                            AllowsSmoking = "No smoking!",
+                            IsChatty = "I'm chatty!",
+                            UserId = 3
+                        },
+                        new
+                        {
+                            PreferenceId = 4,
+                            AllowsMusic = "Prefer silence",
+                            AllowsPets = "No pets allowed",
+                            AllowsSmoking = "No smoking!",
+                            IsChatty = "I'm the quiet type",
+                            UserId = 4
+                        },
+                        new
+                        {
+                            PreferenceId = 5,
+                            AllowsMusic = "Prefer music!",
+                            AllowsPets = "No pets allowed",
+                            AllowsSmoking = "I'm fine with smoking",
+                            IsChatty = "I'm chatty!",
+                            UserId = 5
+                        },
+                        new
+                        {
+                            PreferenceId = 6,
+                            AllowsMusic = "Prefer silence",
+                            AllowsPets = "I love pets.",
+                            AllowsSmoking = "I'm fine with smoking",
+                            IsChatty = "I'm the quiet type",
+                            UserId = 6
+                        },
+                        new
+                        {
+                            PreferenceId = 7,
+                            AllowsMusic = "Prefer music!",
+                            AllowsPets = "I love pets.",
+                            AllowsSmoking = "No smoking!",
+                            IsChatty = "I'm chatty!",
+                            UserId = 7
+                        },
+                        new
+                        {
+                            PreferenceId = 8,
+                            AllowsMusic = "Prefer music!",
+                            AllowsPets = "No pets allowed",
+                            AllowsSmoking = "No smoking!",
+                            IsChatty = "I'm the quiet type",
+                            UserId = 8
+                        });
                 });
 
             modelBuilder.Entity("hajUsput.Services.Database.ReviewRating", b =>
@@ -355,11 +840,42 @@ namespace hajUsput.Services.Migrations
                         new
                         {
                             ReviewId = 1,
-                            Comments = "Great ride!",
+                            Comments = "Great driver! Very punctual and friendly.",
                             DriverId = 1,
                             Rating = 5,
-                            ReviewDate = new DateTime(2024, 9, 5, 1, 59, 0, 759, DateTimeKind.Local).AddTicks(4733),
-                            ReviewerId = 2
+                            ReviewDate = new DateTime(2025, 2, 4, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2392),
+                            ReviewerId = 2,
+                            RideId = 1
+                        },
+                        new
+                        {
+                            ReviewId = 2,
+                            Comments = "Good ride, but the car could have been cleaner.",
+                            DriverId = 3,
+                            Rating = 4,
+                            ReviewDate = new DateTime(2025, 2, 5, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2398),
+                            ReviewerId = 4,
+                            RideId = 3
+                        },
+                        new
+                        {
+                            ReviewId = 3,
+                            Comments = "Smooth ride and friendly conversation.",
+                            DriverId = 2,
+                            Rating = 5,
+                            ReviewDate = new DateTime(2025, 2, 9, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2402),
+                            ReviewerId = 3,
+                            RideId = 9
+                        },
+                        new
+                        {
+                            ReviewId = 4,
+                            Comments = "Safe driving, but arrived slightly late.",
+                            DriverId = 3,
+                            Rating = 4,
+                            ReviewDate = new DateTime(2025, 2, 5, 12, 51, 17, 881, DateTimeKind.Local).AddTicks(2406),
+                            ReviewerId = 2,
+                            RideId = 3
                         });
                 });
 
@@ -415,12 +931,209 @@ namespace hajUsput.Services.Migrations
                         new
                         {
                             RideId = 1,
-                            DepartureDate = new DateTime(2024, 9, 5, 1, 59, 0, 759, DateTimeKind.Local).AddTicks(4565),
+                            AvailableSeats = 0,
+                            DepartureDate = new DateTime(2025, 2, 1, 21, 51, 17, 881, DateTimeKind.Local).AddTicks(1908),
                             DepartureLocationId = 1,
                             DestinationLocationId = 2,
-                            Distance = 0.0,
+                            Distance = 150.5,
                             DriverId = 1,
-                            Duration = 0.0,
+                            Duration = 120.0,
+                            Price = 25,
+                            RideStatus = "Archived"
+                        },
+                        new
+                        {
+                            RideId = 2,
+                            AvailableSeats = 1,
+                            DepartureDate = new DateTime(2025, 2, 6, 20, 51, 17, 881, DateTimeKind.Local).AddTicks(1958),
+                            DepartureLocationId = 3,
+                            DestinationLocationId = 4,
+                            Distance = 200.30000000000001,
+                            DriverId = 2,
+                            Duration = 150.0,
+                            Price = 30,
+                            RideStatus = "Archived"
+                        },
+                        new
+                        {
+                            RideId = 3,
+                            AvailableSeats = 4,
+                            DepartureDate = new DateTime(2025, 2, 15, 2, 51, 17, 881, DateTimeKind.Local).AddTicks(1965),
+                            DepartureLocationId = 2,
+                            DestinationLocationId = 5,
+                            Distance = 320.69999999999999,
+                            DriverId = 3,
+                            Duration = 220.0,
+                            Price = 50,
+                            RideStatus = "Scheduled"
+                        },
+                        new
+                        {
+                            RideId = 4,
+                            AvailableSeats = 0,
+                            DepartureDate = new DateTime(2025, 2, 4, 22, 51, 17, 881, DateTimeKind.Local).AddTicks(1971),
+                            DepartureLocationId = 6,
+                            DestinationLocationId = 7,
+                            Distance = 120.0,
+                            DriverId = 4,
+                            Duration = 90.0,
+                            Price = 20,
+                            RideStatus = "Archived"
+                        },
+                        new
+                        {
+                            RideId = 5,
+                            AvailableSeats = 3,
+                            DepartureDate = new DateTime(2025, 2, 16, 19, 51, 17, 881, DateTimeKind.Local).AddTicks(1978),
+                            DepartureLocationId = 8,
+                            DestinationLocationId = 1,
+                            Distance = 400.0,
+                            DriverId = 5,
+                            Duration = 300.0,
+                            Price = 60,
+                            RideStatus = "Scheduled"
+                        },
+                        new
+                        {
+                            RideId = 6,
+                            AvailableSeats = 4,
+                            DepartureDate = new DateTime(2025, 2, 13, 4, 51, 17, 881, DateTimeKind.Local).AddTicks(1984),
+                            DepartureLocationId = 3,
+                            DestinationLocationId = 2,
+                            Distance = 180.0,
+                            DriverId = 6,
+                            Duration = 130.0,
+                            Price = 35,
+                            RideStatus = "Scheduled"
+                        },
+                        new
+                        {
+                            RideId = 7,
+                            AvailableSeats = 0,
+                            DepartureDate = new DateTime(2025, 2, 3, 21, 51, 17, 881, DateTimeKind.Local).AddTicks(1990),
+                            DepartureLocationId = 4,
+                            DestinationLocationId = 6,
+                            Distance = 300.0,
+                            DriverId = 7,
+                            Duration = 240.0,
+                            Price = 45,
+                            RideStatus = "Archived"
+                        },
+                        new
+                        {
+                            RideId = 8,
+                            AvailableSeats = 0,
+                            DepartureDate = new DateTime(2025, 2, 6, 0, 51, 17, 881, DateTimeKind.Local).AddTicks(1995),
+                            DepartureLocationId = 5,
+                            DestinationLocationId = 7,
+                            Distance = 220.0,
+                            DriverId = 8,
+                            Duration = 180.0,
+                            Price = 40,
+                            RideStatus = "Archived"
+                        },
+                        new
+                        {
+                            RideId = 9,
+                            AvailableSeats = 0,
+                            DepartureDate = new DateTime(2025, 2, 8, 23, 51, 17, 881, DateTimeKind.Local).AddTicks(2001),
+                            DepartureLocationId = 2,
+                            DestinationLocationId = 6,
+                            Distance = 180.0,
+                            DriverId = 2,
+                            Duration = 140.0,
+                            Price = 35,
+                            RideStatus = "Archived"
+                        },
+                        new
+                        {
+                            RideId = 10,
+                            AvailableSeats = 2,
+                            DepartureDate = new DateTime(2025, 2, 16, 1, 51, 17, 881, DateTimeKind.Local).AddTicks(2082),
+                            DepartureLocationId = 3,
+                            DestinationLocationId = 8,
+                            Distance = 250.0,
+                            DriverId = 2,
+                            Duration = 180.0,
+                            Price = 40,
+                            RideStatus = "Scheduled"
+                        },
+                        new
+                        {
+                            RideId = 11,
+                            AvailableSeats = 0,
+                            DepartureDate = new DateTime(2025, 2, 3, 22, 51, 17, 881, DateTimeKind.Local).AddTicks(2088),
+                            DepartureLocationId = 5,
+                            DestinationLocationId = 1,
+                            Distance = 300.0,
+                            DriverId = 2,
+                            Duration = 220.0,
+                            Price = 45,
+                            RideStatus = "Archived"
+                        },
+                        new
+                        {
+                            RideId = 12,
+                            AvailableSeats = 4,
+                            DepartureDate = new DateTime(2025, 2, 18, 3, 51, 17, 881, DateTimeKind.Local).AddTicks(2094),
+                            DepartureLocationId = 6,
+                            DestinationLocationId = 3,
+                            Distance = 280.0,
+                            DriverId = 2,
+                            Duration = 200.0,
+                            Price = 50,
+                            RideStatus = "Scheduled"
+                        },
+                        new
+                        {
+                            RideId = 13,
+                            AvailableSeats = 0,
+                            DepartureDate = new DateTime(2025, 2, 7, 21, 51, 17, 881, DateTimeKind.Local).AddTicks(2100),
+                            DepartureLocationId = 4,
+                            DestinationLocationId = 2,
+                            Distance = 130.0,
+                            DriverId = 2,
+                            Duration = 100.0,
+                            Price = 30,
+                            RideStatus = "Archived"
+                        },
+                        new
+                        {
+                            RideId = 14,
+                            AvailableSeats = 3,
+                            DepartureDate = new DateTime(2025, 2, 14, 5, 51, 17, 881, DateTimeKind.Local).AddTicks(2107),
+                            DepartureLocationId = 7,
+                            DestinationLocationId = 5,
+                            Distance = 260.0,
+                            DriverId = 2,
+                            Duration = 190.0,
+                            Price = 55,
+                            RideStatus = "Scheduled"
+                        },
+                        new
+                        {
+                            RideId = 15,
+                            AvailableSeats = 0,
+                            DepartureDate = new DateTime(2025, 2, 5, 0, 51, 17, 881, DateTimeKind.Local).AddTicks(2112),
+                            DepartureLocationId = 8,
+                            DestinationLocationId = 6,
+                            Distance = 220.0,
+                            DriverId = 2,
+                            Duration = 170.0,
+                            Price = 40,
+                            RideStatus = "Archived"
+                        },
+                        new
+                        {
+                            RideId = 16,
+                            AvailableSeats = 2,
+                            DepartureDate = new DateTime(2025, 2, 17, 2, 51, 17, 881, DateTimeKind.Local).AddTicks(2118),
+                            DepartureLocationId = 3,
+                            DestinationLocationId = 1,
+                            Distance = 310.0,
+                            DriverId = 2,
+                            Duration = 230.0,
+                            Price = 60,
                             RideStatus = "Scheduled"
                         });
                 });
@@ -526,30 +1239,114 @@ namespace hajUsput.Services.Migrations
                         new
                         {
                             UserId = 1,
-                            Email = "admin@example.com",
-                            FirstName = "Admin",
-                            GenderId = 1,
+                            Email = "desktop@example.com",
+                            FirstName = "Desktop",
+                            GenderId = 3,
                             IsBlocked = false,
-                            LastName = "User",
-                            PasswordHash = "adminhash",
-                            PasswordSalt = "adminsalt",
-                            PhoneNumber = "1234567890",
-                            RegistrationDate = new DateTime(2024, 9, 5, 1, 59, 0, 759, DateTimeKind.Local).AddTicks(4420),
-                            Username = "admin"
+                            LastName = "Admin",
+                            PasswordHash = "2cbdZqHhy9RrytXZahjsbxwei/E=",
+                            PasswordSalt = "uL8kIBKEeCRKGdcpeVEywQ==",
+                            PhoneNumber = "111111111",
+                            RegistrationDate = new DateTime(2025, 2, 11, 11, 51, 17, 881, DateTimeKind.Utc).AddTicks(1529),
+                            Username = "desktop"
                         },
                         new
                         {
                             UserId = 2,
-                            Email = "johndoe@example.com",
+                            Email = "mobile@example.com",
+                            FirstName = "Mobile",
+                            GenderId = 3,
+                            IsBlocked = false,
+                            LastName = "User",
+                            PasswordHash = "B16o6u/bkUnb/UyRPjNvvC40QGg=",
+                            PasswordSalt = "iGZkmWiEvWTcgdKyA7nzsw==",
+                            PhoneNumber = "222222222",
+                            RegistrationDate = new DateTime(2025, 2, 11, 11, 51, 17, 881, DateTimeKind.Utc).AddTicks(1539),
+                            Username = "mobile"
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            Email = "john.doe@example.com",
                             FirstName = "John",
                             GenderId = 1,
                             IsBlocked = false,
                             LastName = "Doe",
-                            PasswordHash = "johnhash",
-                            PasswordSalt = "johnsalt",
-                            PhoneNumber = "0987654321",
-                            RegistrationDate = new DateTime(2024, 9, 5, 1, 59, 0, 759, DateTimeKind.Local).AddTicks(4475),
-                            Username = "johndoe"
+                            PasswordHash = "wOk6vHp5cvY+Q8a0O6xAHnYZYFA=",
+                            PasswordSalt = "6uWglWz8+FPXd0HaS+EJ2g==",
+                            PhoneNumber = "333333333",
+                            RegistrationDate = new DateTime(2025, 2, 11, 11, 51, 17, 881, DateTimeKind.Utc).AddTicks(1543),
+                            Username = "john.doe"
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            Email = "jane.smith@example.com",
+                            FirstName = "Jane",
+                            GenderId = 2,
+                            IsBlocked = false,
+                            LastName = "Smith",
+                            PasswordHash = "4bW2W2Q0wnyY0E3POm9kPYJktVs=",
+                            PasswordSalt = "oq7VOWmLurMri8cxiJbshA==",
+                            PhoneNumber = "444444444",
+                            RegistrationDate = new DateTime(2025, 2, 11, 11, 51, 17, 881, DateTimeKind.Utc).AddTicks(1547),
+                            Username = "jane.smith"
+                        },
+                        new
+                        {
+                            UserId = 5,
+                            Email = "alice.johnson@example.com",
+                            FirstName = "Alice",
+                            GenderId = 2,
+                            IsBlocked = false,
+                            LastName = "Johnson",
+                            PasswordHash = "0FiR8gJfy/ED7BZ1ssAgkRX6h7g=",
+                            PasswordSalt = "lI62DwXac3xk0tLIWBcj2g==",
+                            PhoneNumber = "555555555",
+                            RegistrationDate = new DateTime(2025, 2, 11, 11, 51, 17, 881, DateTimeKind.Utc).AddTicks(1551),
+                            Username = "alice.johnson"
+                        },
+                        new
+                        {
+                            UserId = 6,
+                            Email = "bob.williams@example.com",
+                            FirstName = "Bob",
+                            GenderId = 1,
+                            IsBlocked = false,
+                            LastName = "Williams",
+                            PasswordHash = "fTZsmb0NgGS8EOfoF0sQ0F9pR7M=",
+                            PasswordSalt = "GTxGmBaI9/ioc94ljYuD9w==",
+                            PhoneNumber = "666666666",
+                            RegistrationDate = new DateTime(2025, 2, 11, 11, 51, 17, 881, DateTimeKind.Utc).AddTicks(1556),
+                            Username = "bob.williams"
+                        },
+                        new
+                        {
+                            UserId = 7,
+                            Email = "david.taylor@example.com",
+                            FirstName = "David",
+                            GenderId = 1,
+                            IsBlocked = true,
+                            LastName = "Taylor",
+                            PasswordHash = "hashedpassword7",
+                            PasswordSalt = "salt7",
+                            PhoneNumber = "9988776655",
+                            RegistrationDate = new DateTime(2025, 2, 11, 11, 51, 17, 881, DateTimeKind.Utc).AddTicks(1560),
+                            Username = "david.taylor"
+                        },
+                        new
+                        {
+                            UserId = 8,
+                            Email = "olivia.moore@example.com",
+                            FirstName = "Olivia",
+                            GenderId = 2,
+                            IsBlocked = false,
+                            LastName = "Moore",
+                            PasswordHash = "hashedpassword8",
+                            PasswordSalt = "salt8",
+                            PhoneNumber = "3344556677",
+                            RegistrationDate = new DateTime(2025, 2, 11, 11, 51, 17, 881, DateTimeKind.Utc).AddTicks(1564),
+                            Username = "olivia.moore"
                         });
                 });
 
@@ -588,6 +1385,42 @@ namespace hajUsput.Services.Migrations
                             UserRoleId = 2,
                             RoleId = 2,
                             UserId = 2
+                        },
+                        new
+                        {
+                            UserRoleId = 3,
+                            RoleId = 2,
+                            UserId = 3
+                        },
+                        new
+                        {
+                            UserRoleId = 4,
+                            RoleId = 2,
+                            UserId = 4
+                        },
+                        new
+                        {
+                            UserRoleId = 5,
+                            RoleId = 2,
+                            UserId = 5
+                        },
+                        new
+                        {
+                            UserRoleId = 6,
+                            RoleId = 2,
+                            UserId = 6
+                        },
+                        new
+                        {
+                            UserRoleId = 7,
+                            RoleId = 2,
+                            UserId = 7
+                        },
+                        new
+                        {
+                            UserRoleId = 8,
+                            RoleId = 2,
+                            UserId = 8
                         });
                 });
 
@@ -616,10 +1449,18 @@ namespace hajUsput.Services.Migrations
 
             modelBuilder.Entity("hajUsput.Services.Database.Car", b =>
                 {
+                    b.HasOne("hajUsput.Services.Database.CarMake", "CarMake")
+                        .WithMany("Cars")
+                        .HasForeignKey("CarMakeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("hajUsput.Services.Database.User", "Driver")
                         .WithMany("Cars")
                         .HasForeignKey("DriverId")
                         .HasConstraintName("FK__Cars__DriverId__4CA06362");
+
+                    b.Navigation("CarMake");
 
                     b.Navigation("Driver");
                 });
@@ -678,13 +1519,15 @@ namespace hajUsput.Services.Migrations
                         .HasForeignKey("ReviewerId")
                         .HasConstraintName("FK__ReviewRat__Revie__5070F446");
 
-                    b.HasOne("hajUsput.Services.Database.Ride", null)
+                    b.HasOne("hajUsput.Services.Database.Ride", "Ride")
                         .WithMany("ReviewRatings")
                         .HasForeignKey("RideId");
 
                     b.Navigation("Driver");
 
                     b.Navigation("Reviewer");
+
+                    b.Navigation("Ride");
                 });
 
             modelBuilder.Entity("hajUsput.Services.Database.Ride", b =>
@@ -736,6 +1579,11 @@ namespace hajUsput.Services.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("hajUsput.Services.Database.CarMake", b =>
+                {
+                    b.Navigation("Cars");
                 });
 
             modelBuilder.Entity("hajUsput.Services.Database.Gender", b =>

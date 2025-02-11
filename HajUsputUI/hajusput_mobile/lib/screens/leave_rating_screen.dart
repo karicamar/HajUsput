@@ -7,11 +7,15 @@ import '../utils/user_session.dart';
 
 class LeaveRatingScreen extends StatefulWidget {
   final int userId;
+  final int rideId;
   final String userName;
+  final Review? existingReview;
 
   LeaveRatingScreen({
     required this.userId,
+    required this.rideId,
     required this.userName,
+    this.existingReview,
   });
 
   @override
@@ -19,9 +23,18 @@ class LeaveRatingScreen extends StatefulWidget {
 }
 
 class _LeaveRatingScreenState extends State<LeaveRatingScreen> {
-  int _rating = 3;
-  TextEditingController _commentController = TextEditingController();
+  late int _rating;
+  late TextEditingController _commentController;
   bool _isSubmitting = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Pre-fill values if editing an existing review
+    _rating = widget.existingReview?.rating ?? 3;
+    _commentController =
+        TextEditingController(text: widget.existingReview?.comments ?? '');
+  }
 
   Future<void> _submitRating() async {
     setState(() {
@@ -29,7 +42,8 @@ class _LeaveRatingScreenState extends State<LeaveRatingScreen> {
     });
 
     final review = Review(
-      null,
+      widget.existingReview?.reviewId,
+      widget.rideId,
       widget.userId,
       UserSession.userId!,
       _rating,
@@ -40,11 +54,21 @@ class _LeaveRatingScreenState extends State<LeaveRatingScreen> {
     try {
       final reviewProvider =
           Provider.of<ReviewProvider>(context, listen: false);
-      await reviewProvider.insert(review);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Rating submitted successfully!')),
-      );
+      if (widget.existingReview != null) {
+        // Update existing review
+        await reviewProvider.update(review.reviewId!, review);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Rating updated successfully!')),
+        );
+      } else {
+        // Insert new review
+        await reviewProvider.insert(review);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Rating submitted successfully!')),
+        );
+      }
+
       Navigator.pop(context);
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -67,7 +91,8 @@ class _LeaveRatingScreenState extends State<LeaveRatingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Leave a Rating'),
+        title: Text(
+            widget.existingReview != null ? 'Edit Rating' : 'Leave a Rating'),
         backgroundColor: Colors.green.shade300,
       ),
       body: Padding(
@@ -75,11 +100,14 @@ class _LeaveRatingScreenState extends State<LeaveRatingScreen> {
         child: Column(
           children: [
             Text(
-              'Rate your experience with ${widget.userName}',
+              widget.existingReview != null
+                  ? 'Edit your rating for ${widget.userName}'
+                  : 'Rate your experience with ${widget.userName}',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
             RatingBar.builder(
+              initialRating: _rating.toDouble(),
               minRating: 1,
               direction: Axis.horizontal,
               itemCount: 5,
@@ -109,7 +137,9 @@ class _LeaveRatingScreenState extends State<LeaveRatingScreen> {
                 ? CircularProgressIndicator()
                 : ElevatedButton(
                     onPressed: _submitRating,
-                    child: Text('Submit Rating'),
+                    child: Text(widget.existingReview != null
+                        ? 'Update Rating'
+                        : 'Submit Rating'),
                     style: ElevatedButton.styleFrom(
                       padding:
                           EdgeInsets.symmetric(horizontal: 40, vertical: 15),

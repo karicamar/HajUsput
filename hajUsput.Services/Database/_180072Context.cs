@@ -18,6 +18,8 @@ public partial class _180072Context : DbContext
     public virtual DbSet<Booking> Bookings { get; set; }
 
     public virtual DbSet<Car> Cars { get; set; }
+    public virtual DbSet<CarMake> CarMakes { get; set; }
+
 
     public virtual DbSet<Gender> Genders { get; set; }
 
@@ -38,13 +40,16 @@ public partial class _180072Context : DbContext
     public virtual DbSet<UserRole> UserRoles { get; set; }
     public virtual DbSet<Preference> Preferences { get; set; }
 
-    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-    //        => optionsBuilder.UseSqlServer("Data Source=localhost, 1433;Initial Catalog=180072; user=sa; Password=yourStrong(!)Password; TrustServerCertificate=True");
-
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //{
+    //    if (!optionsBuilder.IsConfigured)
+    //        optionsBuilder.UseSqlServer("Server=localhost,1433;Database=180072;User=sa;Password=yourStrong(!)Password;ConnectRetryCount=0;TrustServerCertificate=True");
+    //}
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        //base.OnModelCreating(modelBuilder);
+
+        Seed(modelBuilder);
 
         // Log or inspect modelBuilder here to ensure it's being configured
         Console.WriteLine("OnModelCreating has been called.");
@@ -72,17 +77,11 @@ public partial class _180072Context : DbContext
             entity.HasKey(e => e.CarId).HasName("PK__Cars__68A0342EA4CAD173");
 
             entity.Property(e => e.CarId);
-            entity.Property(e => e.CarType)
-                .HasMaxLength(50)
-                .IsUnicode(false);
             entity.Property(e => e.Color)
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.LicensePlateNumber)
                 .HasMaxLength(20)
-                .IsUnicode(false);
-            entity.Property(e => e.Make)
-                .HasMaxLength(50)
                 .IsUnicode(false);
 
             entity.HasOne(d => d.Driver).WithMany(p => p.Cars)
@@ -245,57 +244,6 @@ public partial class _180072Context : DbContext
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK__UserRoles__UserI__3E52440B");
         });
-
-        //////
-
-        modelBuilder.Entity<Gender>().HasData(
-            new Gender { GenderId = 1, GenderName = "Male" },
-            new Gender { GenderId = 2, GenderName = "Female" }
-        );
-
-        modelBuilder.Entity<Role>().HasData(
-            new Role { RoleId = 1, RoleName = "Admin" },
-            new Role { RoleId = 2, RoleName = "User" }
-        );
-
-        modelBuilder.Entity<User>().HasData(
-            new User { UserId = 1, Username = "admin", FirstName = "Admin", LastName = "User", Email = "admin@example.com", PhoneNumber = "1234567890", PasswordHash = "adminhash", PasswordSalt = "adminsalt", RegistrationDate = DateTime.Now, GenderId = 1 },
-            new User { UserId = 2, Username = "johndoe", FirstName = "John", LastName = "Doe", Email = "johndoe@example.com", PhoneNumber = "0987654321", PasswordHash = "johnhash", PasswordSalt = "johnsalt", RegistrationDate = DateTime.Now, GenderId = 1 }
-        );
-
-        modelBuilder.Entity<UserRole>().HasData(
-            new UserRole { UserRoleId = 1, UserId = 1, RoleId = 1 },
-            new UserRole { UserRoleId = 2, UserId = 2, RoleId = 2 }
-        );
-
-        modelBuilder.Entity<Location>().HasData(
-            new Location { LocationId = 1, City = "Frankfurt", Country = "Germany" },
-            new Location { LocationId = 2, City = "Tuzla", Country = "BiH" }
-        );
-
-        modelBuilder.Entity<Car>().HasData(
-            new Car { CarId = 1, CarType = "Sedan", Color = "Red", LicensePlateNumber = "ABC123", Make = "Toyota", DriverId = 1 }
-        );
-
-        modelBuilder.Entity<Ride>().HasData(
-            new Ride { RideId = 1, DepartureDate = DateTime.Now, RideStatus = "Scheduled", DepartureLocationId = 1, DestinationLocationId = 2, DriverId = 1 }
-        );
-
-        modelBuilder.Entity<Booking>().HasData(
-            new Booking { BookingId = 1, BookingDate = DateTime.Now, BookingStatus = "Confirmed", PassengerId = 2, RideId = 1 }
-        );
-
-        modelBuilder.Entity<Payment>().HasData(
-            new Payment { PaymentId = 1, Amount = 20.00m, PaymentDate = DateTime.Now, PaymentStatus = "Completed", PayerId = 2, RideId = 1 }
-        );
-
-        modelBuilder.Entity<ReviewRating>().HasData(
-            new ReviewRating { ReviewId = 1, Comments = "Great ride!", ReviewDate = DateTime.Now, ReviewerId = 2, DriverId = 1, Rating=5 }
-        );
-
-        modelBuilder.Entity<MessageNotification>().HasData(
-            new MessageNotification { MessageId = 1, MessageContent = "Your ride is scheduled.", MessageDate = DateTime.Now, SenderId = 1, ReceiverId = 2 }
-        );
 
         OnModelCreatingPartial(modelBuilder);
     }

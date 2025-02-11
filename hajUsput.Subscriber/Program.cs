@@ -13,10 +13,10 @@ class Program
 
         
         var factory = new ConnectionFactory() {
-            HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "hajusput-rabbitmq",
-            Port = int.Parse(Environment.GetEnvironmentVariable("RABBITMQ_PORT") ?? "5672"),
-            UserName = Environment.GetEnvironmentVariable("RABBITMQ_USERNAME") ?? "guest",
-            Password = Environment.GetEnvironmentVariable("RABBITMQ_PASSWORD") ?? "guest",
+            HostName = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "",
+            Port = int.Parse(Environment.GetEnvironmentVariable("RABBITMQ_PORT") ?? ""),
+            UserName = Environment.GetEnvironmentVariable("RABBITMQ_USERNAME") ?? "",
+            Password = Environment.GetEnvironmentVariable("RABBITMQ_PASSWORD") ?? "",
             RequestedConnectionTimeout = TimeSpan.FromSeconds(30),
             RequestedHeartbeat = TimeSpan.FromSeconds(60),
             AutomaticRecoveryEnabled = true,
@@ -72,10 +72,10 @@ class Program
     {
         try
         {
-            string smtpServer = Environment.GetEnvironmentVariable("SMTP_SERVER") ?? "smtp.gmail.com";
-            int smtpPort = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT") ?? "587");
-            string email = Environment.GetEnvironmentVariable("SMTP_EMAIL") ?? "haj.usput@gmail.com";
-            string password = Environment.GetEnvironmentVariable("SMTP_PASSWORD") ?? "grwc uivn hgtn azyx";
+            string smtpServer = Environment.GetEnvironmentVariable("SMTP_SERVER") ?? "";
+            int smtpPort = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT") ?? "");
+            string email = Environment.GetEnvironmentVariable("SMTP_EMAIL") ?? "";
+            string password = Environment.GetEnvironmentVariable("SMTP_PASSWORD") ?? "";
 
             var smtpClient = new SmtpClient()
             {

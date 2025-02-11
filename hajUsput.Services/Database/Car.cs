@@ -9,9 +9,7 @@ public partial class Car
 
     public int? DriverId { get; set; }
 
-    public string Make { get; set; } = null!;
-
-    public string CarType { get; set; } = null!;
+    public int CarMakeId { get; set; } 
 
     public string Color { get; set; } = null!;
 
@@ -20,4 +18,6 @@ public partial class Car
     public string? LicensePlateNumber { get; set; }
 
     public virtual User? Driver { get; set; }
+    public virtual CarMake CarMake { get; set; } = null!;
+
 }
