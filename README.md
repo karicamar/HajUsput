@@ -77,6 +77,67 @@ Some of the technologies and packages used:
 - **iTextSharp**: for generating PDF reports (financial, payment summaries, etc.)
 - **Stateless (NuGet Package)**: for implementing state machine logic
 
+## Flutter App Screenshots
+
+<table>
+  <tr>
+    <td><img src="screenshots/Screenshot_2025-02-11-13-56-32-867_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-13-57-34-586_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-13-57-52-543_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-13-58-08-714_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-13-59-03-831_com.example.hajusput_mobile.jpg" width=200></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/Screenshot_2025-02-11-14-05-08-850_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-14-05-44-006_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-14-05-58-798_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-14-06-08-585_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-14-06-33-806_com.example.hajusput_mobile.jpg" width=200></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/Screenshot_2025-02-11-14-06-37-364_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-14-06-42-367_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-14-06-50-219_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-36-36-938_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-36-48-419_com.example.hajusput_mobile.jpg" width=200></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-36-52-181_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-36-57-507_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-37-13-335_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-37-17-444_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-37-21-777_com.example.hajusput_mobile.jpg" width=200></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-37-39-380_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-37-43-138_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-37-56-572_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-38-08-297_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-38-12-136_com.example.hajusput_mobile.jpg" width=200></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-38-18-781_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-38-28-099_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-38-33-120_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-38-43-973_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-38-50-499_com.example.hajusput_mobile.jpg" width=200></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-44-31-036_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-46-15-352_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-46-47-177_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-16-46-53-316_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-17-38-40-433_com.example.hajusput_mobile.jpg" width=200></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/Screenshot_2025-02-11-17-38-48-073_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-17-39-28-053_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-17-39-42-125_com.example.hajusput_mobile.jpg" width=200></td>
+  </tr>
+</table>
+
+
+
 # LICENSE
 Licensed under [MIT license](LICENSE)
 
