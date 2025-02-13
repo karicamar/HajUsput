@@ -14,7 +14,6 @@ if (localPropertiesFile.exists()) {
     }
 }
 def mapsApiKey = localProperties.getProperty('MAPS_API_KEY')
-println "Google Maps API Key: $mapsApiKey"
 
 
 def flutterVersionCode = localProperties.getProperty("flutter.versionCode")

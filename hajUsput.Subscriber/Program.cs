@@ -77,6 +77,8 @@ class Program
             string email = Environment.GetEnvironmentVariable("SMTP_EMAIL") ?? "";
             string password = Environment.GetEnvironmentVariable("SMTP_PASSWORD") ?? "";
 
+            
+
             var smtpClient = new SmtpClient()
             {
                 Host = smtpServer,

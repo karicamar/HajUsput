@@ -44,6 +44,11 @@ class UserProvider extends BaseProvider<User> {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final userId = data['userId'];
+      final roleName = data['userRoles'][0]['role']['roleName'];
+
+      if (roleName != 'Admin') {
+        throw Exception("Only admins are allowed to log in.");
+      }
 
       UserSession.setUser(userId, username, password);
 

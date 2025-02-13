@@ -43,7 +43,7 @@ namespace HajUsput.Controllers
             var user = await _userService.Login(request.Username, request.Password);
             if (user == null) return Unauthorized();
 
-            return Ok(new { user.UserId /* other user details */ });
+            return Ok(new { user.UserId, user.UserRoles });
         }
 
 

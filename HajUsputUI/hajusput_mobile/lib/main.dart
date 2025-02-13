@@ -25,12 +25,12 @@ void main() async {
   Stripe.publishableKey =
       const String.fromEnvironment('STRIPE_PUBLISHABLE_KEY', defaultValue: "");
   await dotenv.load(fileName: '.env');
-  print("passed creds: ${Stripe.publishableKey}");
+  //print("passed creds: ${Stripe.publishableKey}");
 
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
   Stripe.publishableKey = dotenv.env['STRIPE_PUBLISH_KEY'] ?? '';
-  print("passed creds: ${Stripe.publishableKey}");
+  //print("passed creds: ${Stripe.publishableKey}");
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => UserProvider()),
