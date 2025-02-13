@@ -138,11 +138,6 @@ Some of the technologies and packages used:
 </table>
 
 ## Flutter Desktop App Screenshots
-
-## Desktop App Screenshots
-
-## Desktop App Screenshots
-
 <table>
   <tr>
     <td><img src="screenshots/2025-02-13 14_22_29-hajusput_desktop.png" width=600></td>
@@ -165,6 +160,6 @@ Some of the technologies and packages used:
 
 
 
-# LICENSE
+# License
 Licensed under [MIT license](LICENSE)
 
