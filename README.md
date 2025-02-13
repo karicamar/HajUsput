@@ -133,6 +133,7 @@ Some of the technologies and packages used:
     <td><img src="screenshots/Screenshot_2025-02-11-17-38-48-073_com.example.hajusput_mobile.jpg" width=200></td>
     <td><img src="screenshots/Screenshot_2025-02-11-17-39-28-053_com.example.hajusput_mobile.jpg" width=200></td>
     <td><img src="screenshots/Screenshot_2025-02-11-17-39-42-125_com.example.hajusput_mobile.jpg" width=200></td>
+    <td><img src="screenshots/Screenshot_2025-02-11-14-04-45-303_com.example.hajusput_mobile.jpg" width=200></td>
   </tr>
 </table>
 
