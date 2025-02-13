@@ -77,7 +77,7 @@ Some of the technologies and packages used:
 - **iTextSharp**: for generating PDF reports (financial, payment summaries, etc.)
 - **Stateless (NuGet Package)**: for implementing state machine logic
 
-## Flutter App Screenshots
+## Flutter Mobile App Screenshots
 
 <table>
   <tr>
@@ -136,6 +136,32 @@ Some of the technologies and packages used:
     <td><img src="screenshots/Screenshot_2025-02-11-14-04-45-303_com.example.hajusput_mobile.jpg" width=200></td>
   </tr>
 </table>
+
+## Flutter Desktop App Screenshots
+
+## Desktop App Screenshots
+
+## Desktop App Screenshots
+
+<table>
+  <tr>
+    <td><img src="screenshots/2025-02-13 14_22_29-hajusput_desktop.png" width=600></td>
+    <td><img src="screenshots/2025-02-13 14_14_41-hajusput_desktop.png" width=600></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/2025-02-13 14_15_40-hajusput_desktop.png" width=600></td>
+    <td><img src="screenshots/2025-02-13 14_16_09-hajusput_desktop.png" width=600></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/2025-02-13 14_18_08-hajusput_desktop.png" width=600></td>
+    <td><img src="screenshots/2025-02-13 14_18_28-hajusput_desktop.png" width=600></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/2025-02-13 14_19_04-hajusput_desktop.png" width=600></td>
+    <td><img src="screenshots/2025-02-13 14_19_17-hajusput_desktop.png" width=600></td>
+  </tr>
+</table>
+
 
 
 
